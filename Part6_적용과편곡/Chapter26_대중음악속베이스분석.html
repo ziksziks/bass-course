@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>Chapter 26. 대중음악 속 베이스 분석</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>Chapter 26. 대중음악 속 베이스 분석</h1><span class="pill">Part 6 · 적용과 편곡</span></div>
+  <p class="muted">실제 노래에서 스케일·코드톤·접근음·진행이 어떻게 쓰였는지 15곡 사례집. 같은 진행 반주로 바로 연습해요.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰의 <b>무음(벨) 스위치</b>를 끄고 재생 버튼을 한 번 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="../Practice/요약노트.html">요약노트</a> · <a href="../Practice/매일연습.html">매일 연습</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+/* 주의: facts = 공개 자료로 확인된 사실(키·진행·베이스의 역할), apply = 이 진행 위에서 연습할 방법. 정확한 음·리듬은 원곡 음원과 공식 악보로 확인. */
+const SONGS={
+ canon:{t:'Canon in D — 파헬벨',tag:'그라운드 베이스 · 하행 스케일',key:2,keyName:'D 메이저',progText:'I–V–vi–iii–IV–I–IV–V (D A Bm F#m G D G A)',prog:'canon',groove:'ballad',line:'root4',bpm:60,
+  tools:['루트 이동','하행 진행','반복(ostinato)'],facts:['베이스가 8개 음(D A B F# G D G A)을 계속 반복하는 "그라운드 베이스(basso ostinato)"로 알려져 있어요. 위의 멜로디가 계속 변해도 바닥의 8음은 그대로예요.','이 8코드 진행을 변형해서 쓴 팝 곡이 아주 많다고 알려져 있어요.'],
+  notes:['D (3번줄 5프렛) – A (3번줄 개방) – B (3번줄 2프렛) – F# (4번줄 2프렛) – G (4번줄 3프렛) – D (3번줄 5프렛) – G (4번줄 3프렛) – A (4번줄 5프렛)','자리는 손이 가까운 곳으로 바꿔도 돼요.'],
+  apply:['4분음표 루트로 먼저 8음 지도를 외우세요 (번호로: 1 5 6 3 4 1 4 5).','익숙해지면 마디 끝에 접근음을 넣어 연결을 부드럽게 해 보세요.','이 8음을 다른 키(G, A)로 옮겨 쳐 보세요. 번호는 그대로예요.'],try:'눈 감고 번호 1 5 6 3 4 1 4 5를 입으로 말하며 치기'},
+ jack:{t:'Hit the Road Jack — 레이 찰스',tag:'하행 베이스 (안달루시아 진행)',key:9,keyName:'마이너 키 (연주 버전마다 표기가 달라 A 마이너로 연습)',progText:'i–♭VII–♭VI–V (Am G F E7)',prog:'andal',groove:'shuffle',line:'root4',bpm:80,
+  tools:['하행 진행','마이너 스케일','도미넌트 도착'],facts:['마이너 키에서 으뜸음에서 스텝으로 내려와 5도(도미넌트)에 도착하는 "하행 베이스" 구조로 설명되는 곡이에요. 이 진행은 안달루시아 종지라고 불러요.','원곡 키는 자료마다 다르게 표기돼요. 이 연습에서는 A 마이너로 옮겨서 해요.'],
+  notes:['A (4번줄 5프렛) → G (4번줄 3프렛) → F (4번줄 1프렛) → E (4번줄 개방)'],
+  apply:['한 마디에 한 음씩 하행(A G F E)을 4분음표로 치세요.','마지막 E에서 다시 A로 올라올 때 반음 접근(G#)을 넣어 보세요.','B 마이너·E 마이너로 키를 옮겨 쳐 보세요.'],try:'번호로 1 b7 b6 5를 말하며 치기'},
+ sna:{t:'Seven Nation Army — The White Stripes',tag:'마이너 스케일 리프 · 반복',key:4,keyName:'E 마이너',progText:'리프 중심 (E 마이너 한 코드 느낌)',prog:'minvamp',groove:'rock',line:'root8',bpm:90,
+  tools:['마이너 스케일','리프','반복'],facts:['리프의 음은 E E G E D C B 로 정리돼요 (E 마이너 안의 음).','베이스 TAB에서는 A줄(3번줄)의 7·10·5프렛으로 시작 음들을 짚는 것으로 소개돼요.'],
+  notes:['E (3번줄 7프렛) E G (3번줄 10프렛) E D (3번줄 5프렛) C (3번줄 3프렛) B (3번줄 2프렛)','번호로: 1 1 b3 1 b7 b6 5'],
+  apply:['이 7음을 "루트-b3-b7-b6-5"로 번호를 붙여 외우세요.','같은 리듬으로 A 마이너(루트 A)로 옮겨 쳐 보세요.','쉼표 위치(숨)를 정확히 지키면 리프가 살아요.'],try:'리듬을 입으로 "딴 딴따 딴 딴 딴 딴"처럼 말하며 먼저 외우기'},
+ wwy:{t:'With or Without You — U2',tag:'루트 8분음표 · 일정함',key:2,keyName:'D 메이저',progText:'I–V–vi–IV (D A Bm G)',prog:'maj-1564',groove:'ballad',line:'root8',bpm:80,
+  tools:['루트','8분음표','일정한 세기'],facts:['베이스가 각 코드의 루트를 8분음표로 계속 반복하는 단순하고 일정한 라인으로 소개돼요.','베이스가 코드의 이름을 알려 주는 "바닥" 역할에 집중한 사례예요.'],
+  notes:['D (3번줄 5프렛) · A (3번줄 개방) · B (3번줄 2프렛) · G (4번줄 3프렛) — 각 8분음표 반복'],
+  apply:['루트 8분음표를 일정한 세기로 한 곡 끝까지 유지하세요.','코드가 바뀌는 마디 첫 박을 정확히 맞추세요.','핑거/피크 두 가지로 쳐서 소리 차이를 비교해 보세요.'],try:'한 번도 세기가 변하지 않게 2분 연속'},
+ lib:{t:'Let It Be — The Beatles',tag:'I–V–vi–IV · 루트 중심',key:0,keyName:'C 메이저',progText:'I–V–vi–IV (C G Am F)',prog:'maj-1564',groove:'ballad',line:'r5',bpm:72,
+  tools:['루트','코드 번호','접근음'],facts:['C–G–Am–F 진행의 대표곡으로 널리 알려져 있어요.'],
+  apply:['루트(C G A F)를 긴 음으로 치며 곡의 흐름을 받쳐요.','Am→F, F→C 전환 직전에 접근음(한 칸 아래)을 넣어 보세요.','1-5-6-4로 번호를 외우고 D 키(D A Bm G)로 옮겨 보세요.'],try:'번호 1 5 6 4를 말하며 치기'},
+ sbm:{t:'Stand By Me — Ben E. King',tag:'반복 리듬 패턴 · I–vi–IV–V',key:9,keyName:'A 메이저',progText:'I–vi–IV–V (A F#m D E)',prog:'maj-1645',groove:'pop',line:'sync',bpm:100,
+  tools:['반복 패턴','싱코페이션','루트'],facts:['곡의 키는 A, 코드는 A–F#m–D–E 로 소개돼요.','베이스 라인은 한 마디짜리 반복 패턴(싱코페이션과 8분음표)이 곡의 얼굴이라고 설명돼요.'],
+  apply:['한 마디짜리 리듬 패턴을 정해서 모든 코드에서 같은 리듬으로 반복하세요.','패턴의 음을 루트-5도 위주로 바꿔 보세요.','원곡의 정확한 패턴은 음원을 들으며 직접 따 보세요.'],try:'한 마디 패턴 하나를 정해 4마디 연속 똑같이'},
+ bj:{t:'Billie Jean — Michael Jackson',tag:'마이너 키 · 반복 그루브',key:6,keyName:'F# 마이너',progText:'마이너 한 코드 중심의 반복 그루브',prog:'minvamp',groove:'funk',line:'root8',bpm:90,
+  tools:['오스티나토','8분음표','루트·5도·4도'],facts:['곡은 F# 마이너로 알려져 있고, 베이스는 일정한 8분음표 반복(오스티나토) 위에서 루트·5도·4도·7도 근처를 오가는 구조로 설명돼요.','세기와 길이가 일정한 것이 이 그루브의 핵심이라고 평가돼요.'],
+  apply:['F# 마이너 스케일 안의 루트·4도·5도·b7만 골라 8분음표로 한 마디짜리 반복 라인을 만들어 보세요.','킥과 락인하는 칸을 먼저 정하세요.','정확한 음은 음원과 공식 악보로 확인하세요.'],try:'F# 마이너 펜타로 한 마디 반복 라인 만들기'},
+ swa:{t:'Sweet Home Alabama — Lynyrd Skynyrd',tag:'I–♭VII–IV · 믹솔리디안 색',key:2,keyName:'D (믹솔리디안 색)',progText:'I–♭VII–IV (D C G)',prog:'mix-vamp',groove:'rock',line:'root8',bpm:98,
+  tools:['믹솔리디안','♭VII','루트'],facts:['D–C–G(I–♭VII–IV) 코드 진행이 곡의 기둥으로 널리 알려져 있어요.'],
+  apply:['♭VII(C)가 나올 때 믹솔리디안의 b7(C 음)이 루트가 되는 걸 확인하세요.','D에서 C로 갈 때 접근음(C#)이 아니라 온음 아래이니 스케일 접근이 자연스러워요.','G 키(G F C)로 옮겨 쳐 보세요.'],try:'번호 1 b7 4로 말하며 치기'},
+ hj:{t:'Hey Joe — (Jimi Hendrix 버전 등)',tag:'5도 순환 진행',key:0,keyName:'C 기준 (자료마다 표기 차이)',progText:'C G D A E (5도씩 올라가는 순환)',prog:'circle5',groove:'rock',line:'r5',bpm:75,
+  tools:['5도 순환','루트 이동'],facts:['C–G–D–A–E처럼 5도(완전5도) 간격으로 코드가 이어지는 진행으로 잘 알려져 있어요.'],
+  apply:['루트 사이 거리가 계속 5도(7칸)임을 눈으로 확인하세요.','루트-5도 라인으로 코드마다 새 루트를 정확히 찾아가는 연습을 하세요.','같은 구조를 다른 키로 옮겨 쳐 보세요.'],try:'다음 루트를 미리 눈으로 찾아 두기'},
+ hc:{t:'Hotel California — Eagles',tag:'마이너 진행 · 하행 루트',key:11,keyName:'B 마이너',progText:'i–V–♭VII–IV–♭VI–♭III–iv–V (Bm F# A E G D Em F#)',prog:'hotelc',groove:'ballad',line:'root4',bpm:70,
+  tools:['마이너 진행','루트 이동','코드 번호'],facts:['Bm–F#–A–E–G–D–Em–F# 코드 진행으로 널리 알려져 있어요.','루트가 B에서 시작해 한 칸씩 내려가는 듯한 큰 흐름이 있어요.'],
+  apply:['번호로 1 5 b7 4 b6 b3 4m 5 를 말하며 루트 위치를 찾으세요.','F#(V)에서 Bm(i)로 돌아오는 도미넌트 → 으뜸 해결을 귀로 느끼세요.','마디 끝 접근음으로 큰 이동(F#→A)을 부드럽게 연결해 보세요.'],try:'8개 코드 루트를 4번줄만으로 치기'},
+ nwc:{t:'No Woman No Cry — Bob Marley & The Wailers',tag:'레게 · I–V–vi–IV',key:0,keyName:'C 메이저',progText:'I–V–vi–IV (C G Am F)',prog:'maj-1564',groove:'reggae',line:'reggae',bpm:75,
+  tools:['레게 쉼표','루트','긴 음'],facts:['C–G–Am–F 진행과 레게 리듬(원드롭 계열)으로 알려진 곡이에요.','레게 베이스는 쉼표와 굵고 긴 저음이 핵심이에요.'],
+  apply:['1박을 비우고 3박에 묵직한 루트를 길게 치세요.','톤을 굵게(저음 올리고 고음 줄이기) 만들어 보세요 (Chapter 28).','다음 코드로 가기 직전의 쉼표를 지키세요.'],try:'일부러 쉬는 박에 손을 줄에 얹어 소리 막기'},
+ mdn:{t:'Moondance — Van Morrison',tag:'도리안 · 두 코드',key:9,keyName:'A 도리안',progText:'i7–ii7 (Am7 Bm7) 반복',prog:'dorian2',groove:'jazz',line:'walk',bpm:100,
+  tools:['도리안','워킹','코드톤'],facts:['Am7–Bm7 두 코드의 반복(도리안)으로 알려진 곡이에요.'],
+  apply:['도리안(A B C D E F# G)의 F#(6도)를 강조해 보세요.','Am7(1 b3 5 b7)와 Bm7(1 b3 5 b7) 코드톤으로 워킹 라인을 만드세요.','한 코드 반복이므로 접근음과 리듬 변화로 지루함을 풀어요.'],try:'F#음을 박 위에 한 번 놓아 도리안 색 확인'},
+ oye:{t:'Oye Como Va — Santana (원곡 Tito Puente)',tag:'도리안 바이브 · 라틴',key:9,keyName:'A 도리안',progText:'i7–IV7 (Am7 D7) 반복',prog:'oyecomova',groove:'funk',line:'ctpass',bpm:100,
+  tools:['도리안','코드톤','싱코페이션'],facts:['Am7–D7 두 코드의 반복(바이브)으로 알려진 곡이에요.'],
+  apply:['Am7에서는 도리안/마이너 펜타, D7에서는 믹솔리디안 음(D E F# G A B C)을 써 보세요.','코드가 바뀔 때 루트(A → D)를 마디 첫 박에 정확히 치세요.','라틴 느낌의 싱코페이션(엇박)을 한 군데만 넣어 보세요.'],try:'D7에서 b7(C)을 강조해 믹솔리디안 색 내기'},
+ aut:{t:'Autumn Leaves (가을 낙엽) — 재즈 스탠다드',tag:'ii–V–I · 워킹 · 접근음',key:7,keyName:'G 마이너 (흔히 쓰는 키)',progText:'Cm7–F7–Bbmaj7–Ebmaj7–Am7b5–D7–Gm (ii–V–I 연속)',prog:'autumn',groove:'jazz',line:'walk',bpm:110,
+  tools:['워킹','가이드톤','접근음','ii–V–I'],facts:['재즈 스탠다드의 대표 진행으로 ii–V–I이 이어지는 구조로 널리 연주돼요(키는 연주 버전마다 달라요).'],
+  apply:['4분음표 워킹으로 각 마디의 1박은 루트(또는 코드톤), 4박은 접근음으로 걸으세요.','Cm7→F7 사이 가이드톤(3도·7도)이 반음 이동하는 걸 확인하세요.','m7b5(Am7b5)에서는 b5를 이해하고 짚어 보세요.'],try:'4분음표 워킹 8마디를 끊김 없이'},
+ fly:{t:'Fly Me to the Moon — 재즈 스탠다드',tag:'5도 순환 · 코드톤',key:9,keyName:'A 마이너 (흔히 쓰는 키)',progText:'Am7–Dm7–G7–Cmaj7–Fmaj7–Bm7b5–E7–Am7',prog:'flyme',groove:'jazz',line:'walk',bpm:110,
+  tools:['5도 순환','워킹','코드톤'],facts:['5도씩 내려가는 순환 진행으로 알려진 재즈 스탠다드예요(키는 버전마다 달라요).'],
+  apply:['루트가 4도 위(또는 5도 아래)로 계속 이동하는 걸 번호로 확인하세요.','각 마디 4박에 다음 루트의 접근음을 넣으세요.','E7(V7)에서 Am7(i)로 돌아오는 해결을 귀로 느끼세요.'],try:'루트 이동 거리가 5도(또는 4도)임을 확인'}
+};
+const sel_=ks=>ks.map(k=>SONGS[k]);
+const THEORY={
+sg1:`<p>곡을 들을 때 <b>어떤 도구가 쓰였는지 찾는 눈</b>을 키워요. 질문 5개: ① 키는? ② 코드 진행은 번호로 무엇? ③ 베이스는 루트만 치나, 코드톤·스케일·접근음도 쓰나? ④ 리듬은 균등한가, 싱코페이션·쉼표가 있나? ⑤ 구간(절·후렴)마다 밀도가 어떻게 변하나?</p>
+<p><b>카피(귀 따기) 절차</b>: ① 곡을 3번 듣고 키를 정한다 ② 속도를 70%로 줄인다 ③ 먼저 루트만 따라가고 ④ 리듬을 입으로 말한다 ⑤ 음 하나하나를 확정한다 ⑥ 공식 악보/TAB과 비교한다. 이 절차는 어떤 곡에도 통해요.</p>`,
+sg2:`<p><b>루트·코드톤 중심의 베이스</b>: 곡의 흐름을 받치는 데 집중한 라인이에요. 화려하지 않지만 이런 곡을 정확하게 치는 것이 밴드의 신뢰를 만들어요. 연습 포인트: <b>일정한 세기, 정확한 코드 전환, 쉼표 지키기</b>. 이 사례들은 모두 "코드가 바뀌는 순간을 정확히 알려 주는 것"이 핵심이에요.</p>`,
+sg3:`<p><b>리프와 스케일 기반 베이스</b>: 짧은 음 몇 개(마이너 펜타·내추럴 마이너)를 리듬으로 가공해서 곡의 얼굴을 만들어요. 연습 포인트: <b>음을 번호(1 b3 4 5 b7)로 외우기 → 다른 키로 옮기기 → 쉼표까지 똑같이</b>. 번호로 외운 리프는 12개 키 어디서든 칠 수 있어요.</p>`,
+sg4:`<p><b>진행의 힘</b>: 어떤 곡은 베이스가 특별한 음을 치지 않아도 <b>코드 진행(루트의 이동)</b> 자체가 곡을 만들어요. 하행, 5도 순환, 마이너 하행 등 이동 모양을 알아 두면 처음 듣는 곡도 다음 코드를 예상할 수 있어요.</p>`,
+sg6:`<p><b>도리안·재즈 진행</b>: 한 코드가 오래 가는 곡은 모드의 색을, ii–V–I가 이어지는 곡은 가이드톤·접근음·워킹을 써요. 연습 포인트: <b>모드 특징 음(도리안의 6) 강조, 3·7의 반음 이동, 4박 접근음</b>. 이 두 곡 유형을 이해하면 소울·재즈·라틴이 쉬워져요.</p>`,
+sg7:`<p>이제 내가 좋아하는 곡을 <b>분석 템플릿</b>으로 직접 분석해 보세요. ① 곡 제목/아티스트 ② 키 ③ 코드 진행(번호) ④ 베이스 역할(루트/리프/워킹) ⑤ 쓰인 도구(스케일/코드톤/접근음) ⑥ 눌러 볼 핵심 음 ⑦ 내가 바꿔 본 점. 이 7줄이 쌓이면 나만의 곡 사전이 돼요.</p>`
+};
+const FAQ={
+sg1:[["곡 분석이 너무 어려워요.","루트만 따라가는 것부터 시작하세요. 코드 진행(번호)이 보이면 반은 끝난 거예요."]],
+sg2:[["루트만 치는 곡은 지루하지 않나요?","일정함이 이 곡들의 힘이에요. 세기와 길이를 똑같이 유지하는 게 가장 어려워요."]],
+sg3:[["리프를 외우기 어려워요.","음 이름 대신 번호(1 b3 4 5 b7)와 리듬을 입으로 먼저 말해 보세요. 손은 나중에 따라와요."]],
+sg4:[["진행 이름이 많아요.","이름보다 '루트가 어디로 움직이는가(하행, 5도, 한 칸 위)'를 보세요."]],
+sg6:[["재즈 곡은 너무 어려워요.","12마디 블루스로 먼저 워킹을 연습하고, 그다음 ii–V–I로 가세요."]],
+sg7:[["어떤 곡을 분석할까요?","좋아하는 곡 하나를 골라 첫 8마디만 분석해도 충분해요."]]
+};
+const SL1=sel_(['wwy','lib','sbm','nwc']),SL2=sel_(['sna','bj','jack']),SL3=sel_(['canon','hj','hc','swa']),SL4=sel_(['mdn','oye','aut','fly']);
+const LESSONS=[
+ L('sg1',15,'곡에서 도구 찾는 눈','분석 5질문 + 카피 6단계','곡을 듣고 키·진행·베이스 역할·도구를 찾는 질문과 카피 절차 익히기',
+  '탐정이 단서를 찾듯 곡에서 도구(스케일·코드톤·접근음)를 찾아봐요.',
+  ['분석 5질문 소리 내어 읽기','카피 6단계 순서 외우기','아래 퀴즈로 확인'],
+  ['처음엔 루트만 찾아도 성공이에요.','곡을 느리게(70%) 들으면 훨씬 잘 들려요.'],
+  quiz([{q:'카피할 때 가장 먼저 찾을 것은?',o:['키와 루트','화려한 필인','장비'],a:0,why:'키와 루트가 지도예요.'},{q:'카피 시 속도는?',o:['70%로 줄이기','원래 속도','2배'],a:0,why:'느리게 들으면 잘 들려요.'},{q:'코드 진행은 어떻게 적는 게 좋아요?',o:['번호','음 이름','색깔'],a:0,why:'번호는 키가 바뀌어도 쓸 수 있어요.'}])),
+ L('sg2',25,'루트·코드톤 중심 사례','바닥을 단단히','With or Without You, Let It Be, Stand By Me, No Woman No Cry의 베이스 역할과 연습법',
+  '건물의 기초 같은 곡들이에요. 기초가 단단해야 위의 악기가 마음껏 놀아요.',
+  ['곡을 하나 골라 카드 읽기','▶ 이 진행으로 연습하기로 반주 틀기','카드의 "내 연습 과제" 하나 해 보기'],
+  ['카드의 "확인된 사실"과 "이 진행 위에서 써 볼 방법"은 달라요. 앞은 곡의 사실, 뒤는 내 연습이에요.'],
+  t=>SongLab(t,SL1,{mods:MODS,bases:['root4','r5','root8']})),
+ L('sg3',25,'리프·스케일 사례','번호로 외우는 리프','Seven Nation Army, Billie Jean, Hit the Road Jack에서 스케일·반복·하행 구조 찾기',
+  '곡의 얼굴(리프)을 번호로 외워서 어떤 키로도 옮겨 봐요.',
+  ['리프를 번호(1 b3 b7 …)로 적기','다른 키로 옮겨 치기','쉼표와 리듬을 입으로 말하기'],
+  ['리프는 "음 몇 개 + 정확한 리듬 + 쉼표"예요. 쉼표가 틀리면 다른 곡이 돼요.'],
+  t=>SongLab(t,SL2,{mods:MODS,bases:['root8','root4']})),
+ L('sg4',25,'진행의 힘 사례','루트의 이동 모양','Canon, Hey Joe, Hotel California, Sweet Home Alabama의 루트 이동 모양 보기',
+  '곡을 만든 건 음표가 아니라 루트의 이동 모양일 때가 많아요.',
+  ['루트의 이동 방향(하행/순환/한 칸)을 말로 설명','번호로 진행을 적어 보기','같은 진행을 다른 키로 옮겨 치기'],
+  ['번호로 적어 두면 키가 바뀌어도 쓸 수 있어요.'],
+  t=>SongLab(t,SL3,{mods:MODS,bases:['root4','r5','root8']})),
+ REST('sg5','쉬는 동안 좋아하는 곡 하나의 코드 진행을 번호로 말해 보세요.'),
+ L('sg6',25,'도리안·재즈 사례','색깔과 워킹','Moondance, Oye Como Va, Autumn Leaves, Fly Me to the Moon에서 모드와 워킹 찾기',
+  '한 색깔로 오래 칠하는 곡(도리안)과 걸어 다니는 곡(워킹)이에요.',
+  ['도리안 곡에서 6번 음을 강조해 치기','ii–V–I 곡에서 워킹으로 걷기','접근음을 마디 4박에 넣기'],
+  ['워킹은 쉬지 않는 4분음표예요. 속도를 70으로 낮춰서 시작하세요.'],
+  t=>SongLab(t,SL4,{mods:MODS,bases:['walk','root4','arp7']})),
+ L('sg7',20,'내 곡 분석 템플릿','7줄 분석','좋아하는 곡 하나를 7줄 템플릿으로 직접 분석하기',
+  '나만의 곡 사전을 만들어요. 한 곡씩 쌓이면 베이스 실력이 선명해져요.',
+  ['곡 하나 선택','키·진행·역할·도구를 적기','반주로 연습하고 내 버전 만들기'],
+  ['공식 악보/TAB과 꼭 비교하세요. 내 귀와 악보가 맞는지 확인하는 과정이 실력이에요.'],
+  t=>{const box=el('div',{class:'tool'});t.append(el('p',{class:'muted'},'아래 7줄을 노트에 그대로 옮겨 적어 보세요. 저장되지 않아요 (복사해서 노트에).'));
+   ['① 곡 제목 / 아티스트','② 키','③ 코드 진행(번호)','④ 베이스 역할(루트 / 리프 / 워킹 / 그루브)','⑤ 쓰인 도구(스케일 · 코드톤 · 접근음 · 리듬)','⑥ 눌러 볼 핵심 음 (줄·프렛)','⑦ 내가 바꿔 본 점'].forEach(x=>t.append(el('div',{class:'chip'},x)));
+   const ta=el('textarea',{style:'width:100%;min-height:140px;margin-top:8px',placeholder:'여기에 메모해 보세요 (페이지를 닫으면 사라져요)'});t.append(ta);}),
+ FINAL('z26',{key:2,prog:'canon',groove:'ballad',bpm:60,progs:['canon','maj-1564','andal'],lines:['root4','appr'],line:'root4',guide:GSTEPS('root4','appr','파헬벨 캐논의 8음(D A B F# G D G A)이 마디마다 한 음씩 바뀌는 걸 눈으로 따라가요.','같이 쳐요. 번호(1 5 6 3 4 1 4 5)를 말하며.','베이스 소리가 꺼져요. 8음을 혼자 쳐요.','마디 끝에 접근음을 넣은 내 버전으로 쳐요.')},
+  [{q:'캐논의 그라운드 베이스는 몇 개 음?',o:['8개','4개','12개'],a:0,why:'D A B F# G D G A 8음.'},{q:'Seven Nation Army 리프의 번호는?',o:['1 1 b3 1 b7 b6 5','1 2 3 4 5 6 7','1 5 1 5'],a:0,why:'E E G E D C B = 1 1 b3 1 b7 b6 5.'},{q:'Am G F E 진행은?',o:['하행 베이스(안달루시아)','5도 순환','블루스'],a:0,why:'스텝으로 내려가는 하행.'},{q:'워킹 베이스의 마지막 박은 주로?',o:['접근음','쉼표','5도'],a:0,why:'다음 루트로 연결.'}])
+];
+
+startCourse(LESSONS,'bass-ch26-done');
+</script></body></html>

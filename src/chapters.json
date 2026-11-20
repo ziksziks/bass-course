@@ -1,0 +1,272 @@
+[
+ {
+  "dir": "Part1_기초",
+  "file": "Chapter1_지판외우기.html",
+  "title": "Chapter 1. 베이스 지판 외우기",
+  "part": "Part 1 · 기초",
+  "intro": "강의 9개. 개방현 → 4번줄 → 3번줄 → 옥타브 → #/b → 60초 게임까지, 베이스 지판 지도를 만드는 첫 걸음이에요.",
+  "src": "ch1",
+  "key": "bass2h-done"
+ },
+ {
+  "dir": "Part1_기초",
+  "file": "Chapter2_음정지도_메이저스케일.html",
+  "title": "Chapter 2. 음정 지도와 메이저 스케일",
+  "part": "Part 1 · 기초",
+  "intro": "음 이름 대신 \"루트에서 몇 번째\"로 지판을 읽는 법. 번호판, 구멍 카드, 이동형 모양, 12개 키, 키 안의 코드.",
+  "src": "ch2",
+  "key": "bassmajor2h-done"
+ },
+ {
+  "dir": "Part2_스케일과코드",
+  "file": "Chapter3_마이너스케일_나란한조.html",
+  "title": "Chapter 3. 마이너 스케일과 나란한조",
+  "part": "Part 2 · 스케일과 코드",
+  "intro": "메이저가 \"맑은 날\"이라면 마이너는 \"흐린 날\". 번호 3·6·7만 한 칸씩 내리면 바뀌어요. Chapter 2를 마치고 오세요.",
+  "src": "ch3",
+  "key": "bass-ch3-done"
+ },
+ {
+  "dir": "Part2_스케일과코드",
+  "file": "Chapter4_펜타토닉과블루스.html",
+  "title": "Chapter 4. 펜타토닉과 블루스 스케일",
+  "part": "Part 2 · 스케일과 코드",
+  "intro": "5개 음만으로 안전하게 멋을 내는 법. 록·블루스 솔로와 베이스 라인의 보물상자예요. Chapter 3을 마치고 오세요.",
+  "src": "ch4",
+  "key": "bass-ch4-done"
+ },
+ {
+  "dir": "Part2_스케일과코드",
+  "file": "Chapter5_코드톤과아르페지오.html",
+  "title": "Chapter 5. 코드톤과 아르페지오",
+  "part": "Part 2 · 스케일과 코드",
+  "intro": "코드를 이루는 재료(1·3·5·7)를 찾아 라인에 쓰는 법. 베이스 라인의 진짜 뼈대예요.",
+  "src": "ch5",
+  "key": "bass-ch5-done"
+ },
+ {
+  "dir": "Part2_스케일과코드",
+  "file": "Chapter6_넥전체연결과포지션.html",
+  "title": "Chapter 6. 넥 전체 연결과 포지션",
+  "part": "Part 2 · 스케일과 코드",
+  "intro": "손 모양 하나를 12프렛 전체에 이어 붙이고, 어디서든 키를 찾아 치는 법.",
+  "src": "ch6",
+  "key": "bass-ch6-done"
+ },
+ {
+  "dir": "Part3_리듬과주법",
+  "file": "Chapter7_리듬과그루브기초.html",
+  "title": "Chapter 7. 리듬과 그루브 기초",
+  "part": "Part 3 · 리듬과 주법",
+  "intro": "박자, 8분·16분음표, 쉼표, 엇박. 베이스는 음정보다 \"언제 치느냐\"가 더 중요해요.",
+  "src": "ch7",
+  "key": "bass-ch7-done"
+ },
+ {
+  "dir": "Part3_리듬과주법",
+  "file": "Chapter8_핑거링.html",
+  "title": "Chapter 8. 핑거링 (손가락 주법)",
+  "part": "Part 3 · 리듬과 주법",
+  "intro": "오른손 검지·중지 교대, 뮤트, 깨끗한 소리 내기, 속도 올리기.",
+  "src": "ch8",
+  "key": "bass-ch8-done"
+ },
+ {
+  "dir": "Part3_리듬과주법",
+  "file": "Chapter9_고스트노트와뮤트.html",
+  "title": "Chapter 9. 고스트노트와 뮤트",
+  "part": "Part 3 · 리듬과 주법",
+  "intro": "소리가 거의 안 나는 \"툭\" 음으로 리듬을 채우는 펑크의 비밀.",
+  "src": "ch9",
+  "key": "bass-ch9-done"
+ },
+ {
+  "dir": "Part3_리듬과주법",
+  "file": "Chapter10_피크주법.html",
+  "title": "Chapter 10. 피크 주법",
+  "part": "Part 3 · 리듬과 주법",
+  "intro": "피크로 다운·업 교대 피킹, 록 8비트와 펑크록에 필요한 오른손.",
+  "src": "ch10",
+  "key": "bass-ch10-done"
+ },
+ {
+  "dir": "Part3_리듬과주법",
+  "file": "Chapter11_슬랩.html",
+  "title": "Chapter 11. 슬랩 (엄지·팝)",
+  "part": "Part 3 · 리듬과 주법",
+  "intro": "엄지로 \"탁\", 검지로 \"팝!\" 펑크·팝 베이스의 화려한 소리.",
+  "src": "ch11",
+  "key": "bass-ch11-done"
+ },
+ {
+  "dir": "Part3_리듬과주법",
+  "file": "Chapter12_레가토와기교.html",
+  "title": "Chapter 12. 해머온·풀오프·슬라이드·비브라토",
+  "part": "Part 3 · 리듬과 주법",
+  "intro": "왼손 기술로 음을 부드럽게 이어 붙이는 법.",
+  "src": "ch12",
+  "key": "bass-ch12-done"
+ },
+ {
+  "dir": "Part4_베이스라인",
+  "file": "Chapter13_내첫베이스라인.html",
+  "title": "Chapter 13. 내 첫 베이스라인 만들기",
+  "part": "Part 4 · 베이스라인",
+  "intro": "근음 연주를 졸업! 루트·5도·옥타브로 나만의 라인을 짜요.",
+  "src": "ch13",
+  "key": "bass-ch13-done"
+ },
+ {
+  "dir": "Part4_베이스라인",
+  "file": "Chapter14_접근음과경과음.html",
+  "title": "Chapter 14. 접근음과 경과음",
+  "part": "Part 4 · 베이스라인",
+  "intro": "다음 코드로 부드럽게 걸어가는 비법: 반음 아래에서 다가가기.",
+  "src": "ch14",
+  "key": "bass-ch14-done"
+ },
+ {
+  "dir": "Part4_베이스라인",
+  "file": "Chapter15_코드진행위라인과곡적용.html",
+  "title": "Chapter 15. 코드 진행 위 라인과 곡 적용",
+  "part": "Part 4 · 베이스라인",
+  "intro": "곡의 코드를 번호로 읽고, 같은 가족 코드로 바꾸고, 내 입맛대로 라인을 고치는 법.",
+  "src": "ch15",
+  "key": "bass-ch15-done"
+ },
+ {
+  "dir": "Part4_베이스라인",
+  "file": "Chapter16_장르별그루브.html",
+  "title": "Chapter 16. 장르별 그루브",
+  "part": "Part 4 · 베이스라인",
+  "intro": "록·팝·펑크·블루스·레게·재즈 — 장르마다 다른 베이스의 말투.",
+  "src": "ch16",
+  "key": "bass-ch16-done"
+ },
+ {
+  "dir": "Part4_베이스라인",
+  "file": "Chapter17_드럼과락인과필인.html",
+  "title": "Chapter 17. 드럼과 락인, 필인",
+  "part": "Part 4 · 베이스라인",
+  "intro": "킥 드럼과 한 몸이 되는 법, 마디 끝을 장식하는 필인.",
+  "src": "ch17",
+  "key": "bass-ch17-done"
+ },
+ {
+  "dir": "Part5_즉흥과잼",
+  "file": "Chapter18_모드와즉흥.html",
+  "title": "Chapter 18. 모드와 즉흥",
+  "part": "Part 5 · 즉흥과 잼",
+  "intro": "도리안·믹솔리디안: 한 음만 바꿔 다른 색깔을 내는 법.",
+  "src": "ch18",
+  "key": "bass-ch18-done"
+ },
+ {
+  "dir": "Part5_즉흥과잼",
+  "file": "Chapter19_모티프와리프와솔로.html",
+  "title": "Chapter 19. 모티프·리프·솔로",
+  "part": "Part 5 · 즉흥과 잼",
+  "intro": "짧은 아이디어 하나를 반복·변형해서 멋진 리프와 솔로로 키우기.",
+  "src": "ch19",
+  "key": "bass-ch19-done"
+ },
+ {
+  "dir": "Part5_즉흥과잼",
+  "file": "Chapter20_잼세션실전.html",
+  "title": "Chapter 20. 잼 세션 실전",
+  "part": "Part 5 · 즉흥과 잼",
+  "intro": "밴드에서 귀로 따라가고, 키를 찾고, 자유롭게 잼하는 마지막 단계. 졸업 챕터!",
+  "src": "ch20",
+  "key": "bass-ch20-done"
+ },
+ {
+  "dir": "Part6_적용과편곡",
+  "file": "Chapter21_코드톤적용실전.html",
+  "title": "Chapter 21. 코드톤 적용 실전",
+  "part": "Part 6 · 적용과 편곡",
+  "intro": "코드톤(1·3·5·7)을 실제 곡 위에서 라인에 쓰는 법. 가이드톤, 코드 연결, 수정 레시피를 반주 음악과 함께 단계별로 따라 해요.",
+  "src": "ch21",
+  "key": "bass-ch21-done"
+ },
+ {
+  "dir": "Part6_적용과편곡",
+  "file": "Chapter22_어프로치노트실전.html",
+  "title": "Chapter 22. 어프로치 노트 실전",
+  "part": "Part 6 · 적용과 편곡",
+  "intro": "단일·이중·둘러싸기·스케일 접근을 어디에, 어떻게 넣는지. 12마디 블루스와 재즈 진행 위에서 직접 넣어 봐요.",
+  "src": "ch22",
+  "key": "bass-ch22-done"
+ },
+ {
+  "dir": "Part6_적용과편곡",
+  "file": "Chapter23_스케일적용실전.html",
+  "title": "Chapter 23. 스케일 적용 실전",
+  "part": "Part 6 · 적용과 편곡",
+  "intro": "코드에 맞는 스케일을 고르고, 강박엔 코드톤·약박엔 스케일 음을 두는 규칙으로 즉흥 라인을 만들어요.",
+  "src": "ch23",
+  "key": "bass-ch23-done"
+ },
+ {
+  "dir": "Part6_적용과편곡",
+  "file": "Chapter24_즉흥설계도.html",
+  "title": "Chapter 24. 즉흥 설계도",
+  "part": "Part 6 · 적용과 편곡",
+  "intro": "리듬 → 코드톤 → 어프로치 → 스케일 네 단계로 쌓는 즉흥 레시피, 모티프 변주 8가지, 공간과 호흡.",
+  "src": "ch24",
+  "key": "bass-ch24-done"
+ },
+ {
+  "dir": "Part6_적용과편곡",
+  "file": "Chapter25_라인수정과편곡.html",
+  "title": "Chapter 25. 라인 수정과 편곡",
+  "part": "Part 6 · 적용과 편곡",
+  "intro": "원곡 라인을 분석하고 수정 레시피 8가지로 내 라인으로 바꾸는 법, 장르 바꾸기, 인트로·엔딩·필인.",
+  "src": "ch25",
+  "key": "bass-ch25-done"
+ },
+ {
+  "dir": "Part6_적용과편곡",
+  "file": "Chapter26_대중음악속베이스분석.html",
+  "title": "Chapter 26. 대중음악 속 베이스 분석",
+  "part": "Part 6 · 적용과 편곡",
+  "intro": "실제 노래에서 스케일·코드톤·접근음·진행이 어떻게 쓰였는지 15곡 사례집. 같은 진행 반주로 바로 연습해요.",
+  "src": "ch26",
+  "key": "bass-ch26-done"
+ },
+ {
+  "dir": "Part7_프로베이시스트",
+  "file": "Chapter27_악보읽기와귀훈련.html",
+  "title": "Chapter 27. 악보 읽기와 귀 훈련",
+  "part": "Part 7 · 프로 베이시스트",
+  "intro": "TAB·오선·코드 차트·번호 표기 읽기, 리듬 읽기, 음정 귀 훈련, 곡 귀 따기 절차.",
+  "src": "ch27",
+  "key": "bass-ch27-done"
+ },
+ {
+  "dir": "Part7_프로베이시스트",
+  "file": "Chapter28_톤과장비.html",
+  "title": "Chapter 28. 톤과 장비",
+  "part": "Part 7 · 프로 베이시스트",
+  "intro": "셋업, 앰프·EQ, 주법별 톤 레시피, 믹스 속 베이스 자리, 줄·튜닝 관리, 몸 관리.",
+  "src": "ch28",
+  "key": "bass-ch28-done"
+ },
+ {
+  "dir": "Part7_프로베이시스트",
+  "file": "Chapter29_밴드실전과무대.html",
+  "title": "Chapter 29. 밴드 실전과 무대",
+  "part": "Part 7 · 프로 베이시스트",
+  "intro": "합주 준비, 시작·끝 신호, 길 잃었을 때 복구, 녹음·피드백, 곡 구조 따라 연주하는 모의 합주.",
+  "src": "ch29",
+  "key": "bass-ch29-done"
+ },
+ {
+  "dir": "Practice",
+  "file": "매일연습.html",
+  "title": "매일 연습 15분",
+  "part": "Practice · 매일",
+  "intro": "매일 15분: 음 찾기 3분 · 스케일 5분 · 번호 2분 · 곡 5분 · 오늘의 주법. 체크는 오늘 하루만 유효하고 내일은 새로 시작해요. 맨 위에 매일 하면 좋은 강의 모음이 있어요.",
+  "src": "daily",
+  "key": "JS:'bass-daily-'+new Date().toISOString().slice(0,10)"
+ }
+]

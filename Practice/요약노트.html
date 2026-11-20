@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>요약노트 · 한 지판으로 보는 전체 강의</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+<style>
+.chiprow{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;-webkit-overflow-scrolling:touch}
+.chiprow button{white-space:nowrap;flex:none}
+.keygrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.keygrid button{padding:8px 2px}
+.say{background:var(--warn-soft);border-radius:10px;padding:10px 14px}
+.mem{background:var(--good-soft);border-radius:10px;padding:10px 14px}
+.mem ol{margin:4px 0 0;padding-left:22px}
+.pickinfo{background:var(--accent-soft);border-radius:10px;padding:10px 14px}
+.pickinfo table{border-collapse:collapse;margin-top:6px;font-size:14px}
+.pickinfo td,.pickinfo th{border:1px solid var(--line);padding:3px 8px;background:var(--surface)}
+.seqchips{display:flex;flex-wrap:wrap;gap:6px}
+.seqchips .chip{font-size:15px;padding:4px 12px}
+.sticky{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0}
+.legend{font-size:13px;color:var(--muted)}
+</style>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#2563c9"></head>
+<body><main>
+<header class="card">
+  <div class="head"><h1>요약노트</h1><span class="pill">한 지판 · 필터로 전체 강의 보기</span></div>
+  <p class="muted">위에서 <b>키</b>를 고르고, <b>주제 필터</b>를 고르면 지판 하나에 스케일·코드·코드톤·어프로치 노트·블록이 한꺼번에 나타나요. 지판의 점을 <b>눌러 보면</b> 그 음의 정체(이름·번호·어떤 스케일과 코드에 속하는지·접근음 쓰임)를 알려 줘요. 외우는 법은 ① 한 줄 요약 ② 외우기 3줄 ③ 이름 가리고 떠올리기 순서로 해요.</p>
+  <p class="mobilehint muted">📱 지판은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰 <b>무음(벨) 스위치</b>를 끄고 점을 눌러 보세요.</p>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="매일연습.html">매일 연습</a> · <a href="잼스튜디오.html">잼 스튜디오</a></p>
+</header>
+<section class="card sticky" aria-label="필터">
+  <b>1) 키(루트) 고르기</b><div class="keygrid" id="keys"></div>
+  <b>2) 주제 고르기</b><div class="chiprow" id="cats"></div>
+  <b>3) 항목 고르기</b><div class="chiprow" id="items"></div>
+  <div id="extra" class="row"></div>
+</section>
+<section class="card">
+  <div class="row" id="viewbar"></div>
+  <div class="legend">● 진한 파랑 = 루트(집) · 연한 파랑 = 해당 음 · 노랑 = 특징 음/접근음 · 점선 = 다른 음. 점을 누르면 소리와 정보가 나와요.</div>
+  <div class="boardwrap" id="board"></div>
+  <div class="seqchips" id="seq"></div>
+</section>
+<section class="card" id="info"></section>
+<section class="card pickinfo" id="pick"><b>👆 지판의 점이나 칸을 눌러 보세요</b><br><span class="muted">누른 자리의 음 정체를 알려 줘요.</span></section>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+/* ===== 상태 ===== */
+const S={key:0,cat:'scale',item:'maj',mode:'name',hide:false,snd:true,tgt:0,rev:{}};
+const LK=(f,id)=>'../'+f+'#'+id;
+const F={c1:'Part1_기초/Chapter1_지판외우기.html',c2:'Part1_기초/Chapter2_음정지도_메이저스케일.html',c3:'Part2_스케일과코드/Chapter3_마이너스케일_나란한조.html',c4:'Part2_스케일과코드/Chapter4_펜타토닉과블루스.html',c5:'Part2_스케일과코드/Chapter5_코드톤과아르페지오.html',c6:'Part2_스케일과코드/Chapter6_넥전체연결과포지션.html',c18:'Part5_즉흥과잼/Chapter18_모드와즉흥.html',c21:'Part6_적용과편곡/Chapter21_코드톤적용실전.html',c22:'Part6_적용과편곡/Chapter22_어프로치노트실전.html',c23:'Part6_적용과편곡/Chapter23_스케일적용실전.html'};
+const pcOf=(key,d)=>(key+d)%12;
+const degName=d=>INT[((d%12)+12)%12];
+function rootF(key){return ((key-4)%12+12)%12;}
+/* 음 목록(루트 기준 반음 수)을 지판 전체에 칠하기 */
+function pcsDots(key,D,alt,kindMap){const out=[];const set=D.map(d=>d%12);for(let si=0;si<4;si++)for(let f=0;f<=12;f++){const d=((NAMES.indexOf(noteAt(si,f))-key)%12+12)%12;if(!set.includes(d))continue;
+  out.push({si,f,name:noteAt(si,f),num:degName(d),kind:(kindMap&&kindMap[d])||(d===0?'root':(alt&&alt.includes(d)?'warn':'note'))});}return out;}
+function seqOf(key,D,alt){const base=rootF(key);return D.filter((d,i,a)=>a.indexOf(d)===i).sort((a,b)=>a-b).map(d=>({P:base+d,label:null,d,kind:d===0||d===12?'root':(alt&&alt.includes(d)?'warn':'note')}));}
+/* ===== 항목 사전 ===== */
+const SCALES=[
+ ['maj','메이저',MODES.maj,[],`밝고 맑은 기본 스케일. 도레미파솔라시도예요.`,['공식: 온 온 반 온 온 온 반','번호: 1 2 3 4 5 6 7 8','반음은 3→4, 7→8 두 군데뿐'],`맑은 날`,[F.c2,'m3'],'0 2 4 5 7 9 11'],
+ ['min','마이너(내추럴)',MODES.min,[3,8,10],`메이저에서 3·6·7번 음만 반음씩 내린 스케일. 차분하고 진지해요.`,['공식: 온 반 온 온 반 온 온','번호: 1 2 b3 4 5 b6 b7 8','노란 점(b3 b6 b7)이 마이너의 표식'],`흐린 날`,[F.c3,'a2'],'0 2 3 5 7 8 10'],
+ ['majpent','메이저 펜타',MODES.majpent,[],`메이저에서 4번·7번을 뺀 5음. 어디서 쳐도 잘 어울리는 안전지대.`,['번호: 1 2 3 5 6','빠진 음: 4, 7','C 메이저 펜타 = A 마이너 펜타 (같은 음)'],`말썽꾸러기 2명을 쉬게 한 5명`,[F.c4,'p3'],'0 2 4 7 9'],
+ ['minpent','마이너 펜타',MODES.minpent,[],`마이너에서 2번·b6을 뺀 5음. 록·블루스 솔로의 단골.`,['번호: 1 b3 4 5 b7','빠진 음: 2, b6','루트에 검지, 손 모양 하나로 12키'],`록 기타의 보물상자`,[F.c4,'p2'],'0 3 5 7 10'],
+ ['blues','블루스 스케일',MODES.blues,[6],`마이너 펜타에 b5(블루 노트) 하나를 더한 스케일.`,['번호: 1 b3 4 b5 5 b7','b5는 짧게 지나가는 음','4 → b5 → 5로 올라가면 블루스 맛'],`소금 한 꼬집`,[F.c4,'p4'],'0 3 5 6 7 10'],
+ ['dor','도리안',MODES.dor,[9],`마이너인데 6번만 밝은 스케일. 소울·펑크·라틴에 어울려요.`,['번호: 1 2 b3 4 5 6 b7','마이너 + 6번 올리기','Am7 한 코드가 길 때 써요'],`흐린 날 속의 햇빛 한 줄기`,[F.c18,'o2'],'0 2 3 5 7 9 10'],
+ ['mix','믹솔리디안',MODES.mix,[10],`메이저인데 7번만 낮은 스케일. 블루스·록 느낌.`,['번호: 1 2 3 4 5 6 b7','메이저 + 7번 내리기','I–♭VII–IV 진행, 도미넌트7 코드에서'],`밝지만 끝나지 않은 문장`,[F.c18,'o3'],'0 2 4 5 7 9 10'],
+ ['lyd','리디안',MODES.lyd,[6],`메이저인데 4번이 반음 높은 스케일. 몽환적이에요.`,['번호: 1 2 3 #4 5 6 7','메이저 + 4번 올리기','maj7 코드에서 쓰기 좋아요'],`하늘로 떠오르는 느낌`,[F.c23,'sc1'],'0 2 4 6 7 9 11'],
+ ['phr','프리지안',MODES.phr,[1],`마이너인데 2번이 반음 낮은 스케일. 스페인풍·어두운 긴장.`,['번호: 1 b2 b3 4 5 b6 b7','마이너 + 2번 내리기','b2가 특징 음'],`그림자가 긴 저녁`,[F.c23,'sc1'],'0 1 3 5 7 8 10'],
+ ['loc','로크리안',MODES.loc,[1,6],`b2와 b5가 있는 불안한 스케일. m7b5 코드 위에서 써요.`,['번호: 1 b2 b3 4 b5 b6 b7','m7b5 코드에서만 가끔','처음엔 몰라도 괜찮아요'],`흔들리는 다리`,[F.c23,'sc1'],'0 1 3 5 6 8 10']
+];
+const CHORDS=[
+ ['cmaj','메이저 코드 (1 3 5)',[0,4,7],[],`밝은 기본 코드. 3도가 장3도(4칸).`,['공식: 0 4 7','3도 = 한 줄 위, 한 칸 왼쪽','도미솔 샌드위치'],`밝은 샌드위치`,[F.c5,'c2']],
+ ['cmin','마이너 코드 (1 b3 5)',[0,3,7],[3],`어두운 코드. 3도가 단3도(3칸).`,['공식: 0 3 7','메이저와 3도 하나만 달라요','b3이 노란 점'],`양파 샌드위치`,[F.c5,'c2']],
+ ['cdim','디미니시 (1 b3 b5)',[0,3,6],[3,6],`3도·5도가 모두 낮은 불안한 코드.`,['공식: 0 3 6','키 안에서는 7번 코드','잘 안 쓰여요'],`삐걱거리는 계단`,[F.c5,'c2']],
+ ['dom7','도미넌트7 (1 3 5 b7)',[0,4,7,10],[10],`블루스·록의 7코드. b7이 긴장을 만들어요.`,['공식: 0 4 7 10','b7 = 두 줄 위, 루트와 같은 프렛','G7 → C로 가려는 힘'],`다음으로 가고 싶은 코드`,[F.c5,'c3']],
+ ['min7','마이너7 (1 b3 5 b7)',[0,3,7,10],[3,10],`소울·재즈의 부드러운 마이너.`,['공식: 0 3 7 10','b3과 b7이 노란 점','Am7 = C6과 같은 음'],`부드러운 소울 샌드위치`,[F.c5,'c3']],
+ ['maj7','메이저7 (1 3 5 7)',[0,4,7,11],[11],`몽환적인 메이저. 7도가 루트 바로 아래 반음.`,['공식: 0 4 7 11','7 = b7보다 한 칸 위','Cmaj7 = C E G B'],`여운이 긴 소리`,[F.c5,'c3']],
+ ['hdim','m7b5 (1 b3 b5 b7)',[0,3,6,10],[3,6,10],`재즈의 ii 코드(단조). b5가 특징.`,['공식: 0 3 6 10','마이너7에서 5도만 반음 내림','Bm7b5 = B D F A'],`긴장된 징검다리`,[F.c21,'ct4']]
+];
+const APP=[
+ ['below','단일 · 아래서',[-1],`목표보다 반음 아래에서 올라와요. 가장 흔하고 강한 끌림.`,['목표 −1반음 → 목표','마디 마지막 박(약박)에 짧게','다음 코드 루트 직전에'],`현관 앞 계단 한 칸`,[F.c22,'ap2']],
+ ['above','단일 · 위에서',[1],`목표보다 반음 위에서 내려앉아요.`,['목표 +1반음 → 목표','아래서보다 차분한 느낌','마찬가지로 짧게'],`위에서 사뿐히`,[F.c22,'ap2']],
+ ['dbl','이중 접근',[-2,-1],`반음 아래 두 단계로 걸어 올라와요.`,['목표 −2 → −1 → 목표','마지막 박의 8분음표 두 개','쓰는 곳: 마디 끝'],`계단 두 칸`,[F.c22,'ap3']],
+ ['enc','둘러싸기',[1,-1],`목표의 위·아래를 한 번씩 거쳐 도착해요.`,['목표 +1 → −1 → 목표','재즈·펑크 필인 느낌','도착 음은 강박'],`문 양옆을 한 바퀴`,[F.c22,'ap3']],
+ ['dia','스케일 접근',['dia'],`반음이 아니라 메이저 스케일 안의 바로 아래 음에서.`,['키의 스케일 음 한 칸 아래','부드럽고 안전해요','발라드·팝에 어울림'],`포장도로로 걸어가기`,[F.c22,'ap4']]
+];
+const SHORT=[
+ ['oct','옥타브 (두 줄 위 +2)',[0,12],`같은 이름의 높은 음. 지름길 모양이에요.`,['두 줄 위, 오른쪽으로 2칸','반음 12칸 = 진동수 2배','12프렛도 옥타브'],`형 음`,[F.c1,'l4']],
+ ['p5','5도 (한 줄 위 +2)',[0,7],`루트의 단짝. 힘과 안정감.`,['한 줄 위, 오른쪽으로 2칸','반음 7칸','루트-5도 라인의 재료'],`든든한 짝꿍`,[F.c2,'m1']],
+ ['m3','3도 (밝음/어두움)',[0,3,4],`3도 하나가 메이저/마이너를 정해요.`,['3(밝음): 한 줄 위, 한 칸 왼쪽','b3(어두움): 같은 줄 3칸 오른쪽','반음 4칸 vs 3칸'],`맛 담당`,[F.c2,'m2']],
+ ['p4','4도 (한 줄 위 같은 프렛)',[0,5],`줄 간격. 같은 프렛 한 줄 위.`,['한 줄 위, 같은 프렛','반음 5칸','5프렛 규칙의 바로 그 5'],`이웃 줄`,[F.c1,'l3']],
+ ['b7','b7 (두 줄 위 같은 프렛)',[0,10],`블루스·록의 7번 음. 두 줄 위 같은 프렛.`,['두 줄 위, 루트와 같은 프렛','반음 10칸','7th 코드의 b7'],`블루스 양념`,[F.c5,'c3']],
+ ['all','번호판 전체 13칸',[0,1,2,3,4,5,6,7,8,9,10,11,12],`루트 기준으로 이름 붙인 투명 번호판.`,['3층: 같은 줄 / 한 줄 위 / 두 줄 위','반음 수 = 번호','키 바꾸기 = 판 밀기'],`투명 번호판`,[F.c2,'m2']]
+];
+const KPROGS=[
+ ['major7','키 안의 7코드 (메이저)',[0,2,4,5,7,9,11],['maj','min','min','maj','maj','min','dim'],`스케일의 7음 위에 쌓은 코드 7개. 번호로 외워요.`,['1 4 5는 메이저, 2 3 6은 마이너, 7은 감소','1(집) 4(이웃) 5(돌아가고 싶은 길)','C 키: C Dm Em F G Am Bdim'],`스케일 7친구가 곧 코드 7개`,[F.c2,'m8']],
+ ['minor7','키 안의 7코드 (마이너)',[0,2,3,5,7,8,10],['min','dim','maj','min','min','maj','maj'],`마이너 키의 코드 7개. 나란한조 메이저와 같은 코드예요.`,['1m 2dim b3 4m 5m b6 b7','Am 키: Am Bdim C Dm Em F G','대표: 1-b6-b3-b7'],`C 키 코드를 A부터 읽기`,[F.c3,'a8']]
+];
+/* 항목 레지스트리 */
+const CATS=[{id:'basic',t:'기본',items:[]},{id:'scale',t:'스케일',items:[]},{id:'chord',t:'코드·코드톤',items:[]},{id:'appr',t:'어프로치',items:[]},{id:'short',t:'지름길',items:[]},{id:'block',t:'블록·줄',items:[]},{id:'prog',t:'키 안의 코드',items:[]}];
+const cat=id=>CATS.find(c=>c.id===id);
+cat('basic').items.push({id:'names',t:'모든 음 이름',say:`지판 전체의 음 이름이에요. 한 줄은 12음 사다리 — 줄마다 시작 음만 달라요.`,mem:['한 줄: C C# D D# E F F# G G# A A# B (반복)','E-F, B-C 사이에는 #이 없어요','5프렛 = 한 줄 위 개방현'],an:'12칸짜리 계단',link:[F.c1,'lb1'],make:k=>({dots:pcsDots(k,[0,1,2,3,4,5,6,7,8,9,10,11,12])}),seq:null});
+SCALES.forEach(([id,t,D,alt,say,mem,an,link,formula])=>cat('scale').items.push({id,t,say,mem,an,link,formula:'반음 간격: '+formula,make:k=>({dots:pcsDots(k,D,alt)}),seq:k=>seqOf(k,D,alt)}));
+CHORDS.forEach(([id,t,D,alt,say,mem,an,link])=>cat('chord').items.push({id,t,say,mem,an,link,make:k=>({dots:pcsDots(k,D,alt)}),seq:k=>seqOf(k,D,alt)}));
+SHORT.forEach(([id,t,D,say,mem,an,link])=>cat('short').items.push({id,t,say,mem,an,link,make:k=>({dots:pcsDots(k,D,D.length>2?[3,4,5,10]:[])}),seq:k=>seqOf(k,D)}));
+APP.forEach(([id,t,offs,say,mem,an,link])=>cat('appr').items.push({id,t,say,mem,an,link,approach:true,offs,
+  tg:()=>S.tgt,
+  make:k=>{const o=appOffs(offs,S.tgt);const km={};km[S.tgt%12]='root';o.forEach(x=>km[((S.tgt+x)%12+12)%12]='warn');const Dl=[S.tgt,...o.map(x=>S.tgt+x)].map(d=>((d%12)+12)%12);return{dots:pcsDots(k,Dl,[],km)};},
+  seq:k=>{const o=appOffs(offs,S.tgt);const base=rootF(k)+12;const arr=o.map(x=>({P:base+S.tgt+x,kind:'warn'}));arr.push({P:base+S.tgt,kind:'root'});return arr;}}));
+function appOffs(offs,tgt){if(offs[0]!=='dia')return offs;const D=[0,2,4,5,7,9,11];const cand=D.map(d=>d-12).concat(D).filter(d=>d<tgt);return[Math.max(...cand)-tgt];}
+/* 블록·줄 */
+STR.slice().reverse().forEach((s,i)=>{const si=3-i;cat('block').items.push({id:'str'+si,t:s.num+'번줄 전체',say:`${s.num}번줄(${s.n}) 0~12프렛을 한 줄 노래처럼.`,mem:['한 줄 12음 사다리','소리 내어 쭉 읽기','이름 가리고 떠올리기'],an:'12칸 계단',link:[F.c1,'lb1'],make:k=>({dots:Array.from({length:13},(_,f)=>({si,f,name:noteAt(si,f),num:degName(NAMES.indexOf(noteAt(si,f))-k),kind:NAMES.indexOf(noteAt(si,f))===k?'root':'note'}))}),seq:k=>Array.from({length:13},(_,f)=>({P:STR[si].s+f,kind:NAMES.indexOf(noteAt(si,f))===k?'root':'note'}))});});
+[3,5,7,12].forEach(f=>cat('block').items.push({id:'pil'+f,t:f+'프렛 기둥',say:`같은 ${f}프렛을 네 줄에 걸쳐 묶은 세로 기둥.`,mem:f===5?['5프렛 기둥 = A D G C','한 줄 위 개방현과 같아요','4개를 한 덩어리로']:f===12?['12프렛 기둥 = E A D G','개방현과 똑같아요','한 바퀴 돌아왔다는 표시']:['네 음을 한 번에 외우기','가로·세로를 같이','손으로 기둥 짚어 보기'],an:'건물의 세로 기둥',link:[F.c1,'lb2'],make:k=>({dots:[3,2,1,0].map(si=>({si,f,name:noteAt(si,f),num:degName(NAMES.indexOf(noteAt(si,f))-k),kind:NAMES.indexOf(noteAt(si,f))===k?'root':'note'}))}),seq:k=>[3,2,1,0].map(si=>({P:STR[si].s+f,kind:'note'}))}));
+for(let i=0;i<7;i++)cat('block').items.push({id:'pos'+i,t:'메이저 포지션 '+(i+1),say:`메이저 스케일을 손이 한 번에 닿는 4~5프렛 구역 7개로 나눈 것 중 ${i+1}번째.`,mem:['4번줄 시작 프렛으로 이름 붙이기','이웃 포지션과 음이 겹쳐 이어져요','7개를 순서대로 걸으면 넥 한 바퀴'],an:'7개의 방',link:[F.c6,'nb1'],make:k=>{const b=windowBlocks(MODES.maj,k,5)[i];return{dots:(b?b.dots:[]).map(d=>({si:d[0],f:d[1],name:d[2],num:d[3],kind:d[4]?'root':'note'}))};},seq:k=>{const b=windowBlocks(MODES.maj,k,5)[i];return(b?b.dots:[]).map(d=>({P:pitch(d[0],d[1]),kind:d[4]?'root':'note'})).sort((a,c)=>a.P-c.P);}});
+for(let i=0;i<5;i++)cat('block').items.push({id:'box'+i,t:'마이너 펜타 박스 '+(i+1),say:`마이너 펜타토닉을 5개 박스로 나눈 것 중 ${i+1}번째. 줄당 2음.`,mem:['박스 1부터 외우기(루트 검지)','다음 박스는 옆으로 이동','키를 바꿔도 모양은 같아요'],an:'5개의 작은 방',link:[F.c4,'pb1'],make:k=>{const b=windowBlocks(MODES.minpent,k,4)[i];return{dots:(b?b.dots:[]).map(d=>({si:d[0],f:d[1],name:d[2],num:d[3],kind:d[4]?'root':'note'}))};},seq:k=>{const b=windowBlocks(MODES.minpent,k,4)[i];return(b?b.dots:[]).map(d=>({P:pitch(d[0],d[1]),kind:d[4]?'root':'note'})).sort((a,c)=>a.P-c.P);}});
+/* 키 안의 코드 */
+KPROGS.forEach(([id,t,D,Q,say,mem,an,link])=>cat('prog').items.push({id,t,say,mem,an,link,make:k=>{const dots=[];D.forEach((d,i)=>{const pc=(k+d)%12,nm=NAMES[pc]+QS[Q[i]];[3,2].forEach(si=>{for(let f=0;f<=12;f++)if(NAMES.indexOf(noteAt(si,f))===pc)dots.push({si,f,name:nm,num:String(i+1),kind:i===0?'root':'note'});});});return{dots};},
+  seq:k=>D.map((d,i)=>({P:rootF(k)+d,kind:i===0?'root':'note'}))}));
+cat('prog').items.push({id:'p1564',t:'1-5-6-4 (팝 진행)',say:`가장 많이 쓰이는 진행. 번호만 알면 12키 어디서나.`,mem:['C 키: C G Am F','1 → 5 → 6 → 4','루트 이동: 위 → 위 → 아래'],an:'네 걸음 산책',link:[F.c2,'m8'],make:k=>{const dots=[];[0,7,9,5].forEach((d,i)=>{const pc=(k+d)%12;[3,2].forEach(si=>{for(let f=0;f<=12;f++)if(NAMES.indexOf(noteAt(si,f))===pc)dots.push({si,f,name:NAMES[pc]+(i===2?'m':''),num:['1','5','6','4'][i],kind:i===0?'root':'note'});});});return{dots};},seq:k=>[0,7,9,5].map((d,i)=>({P:rootF(k)+d,kind:i===0?'root':'note'}))});
+cat('prog').items.push({id:'blues',t:'12마디 블루스 (I IV V)',say:`블루스의 틀. 세 코드만 알면 돼요.`,mem:['I 4마디 – IV 2마디 – I 2마디','V 1 – IV 1 – I 1 – V 1','모든 코드가 7th (C7 F7 G7)'],an:'12칸 노래',link:['Part4_베이스라인/Chapter16_장르별그루브.html','v4'],make:k=>{const dots=[];[[0,'7','1'],[5,'7','4'],[7,'7','5']].forEach(([d,q,n],i)=>{const pc=(k+d)%12;[3,2].forEach(si=>{for(let f=0;f<=12;f++)if(NAMES.indexOf(noteAt(si,f))===pc)dots.push({si,f,name:NAMES[pc]+q,num:n,kind:i===0?'root':'note'});});});return{dots};},seq:k=>[0,0,5,0,7,5,0,7].map((d,i)=>({P:rootF(k)+d,kind:d===0?'root':'note'}))});
+/* ===== 화면 ===== */
+const $=id=>document.getElementById(id);
+const wrap=$('board');const bd=Board(wrap,{frets:NF,onPick:(si,f)=>onPick(si,f)});
+let ids=[],cur=null;
+const lab=d=>S.hide&&!S.rev[d.si+':'+d.f]?'?':(S.mode==='num'?d.num:d.name);
+function curItem(){return cat(S.cat).items.find(x=>x.id===S.item)||cat(S.cat).items[0];}
+function draw(){ids.forEach(clearTimeout);ids=[];bd.clear();const it=curItem();cur=it.make(S.key);cur.dots.forEach(d=>{const hid=S.hide&&!S.rev[d.si+':'+d.f];bd.dot(d.si,d.f,lab(d),hid?'q':d.kind);});
+  const sq=$('seq');sq.innerHTML='';const arr=cur.dots.filter(d=>d.kind==='root'||true).slice();if(it.seq){it.seq(S.key).forEach((s,i)=>{const p=posOf(s.P,0);const nm=noteAt(p.si,p.f),d=((NAMES.indexOf(nm)-S.key)%12+12)%12;sq.append(el('span',{class:'chip',id:'sc'+i},S.mode==='num'?degName(d):nm));});}}
+function info(){const it=curItem(),box=$('info');box.innerHTML='';
+  box.append(el('h2',{style:'margin:0'},(S.cat==='scale'||S.cat==='chord'||S.cat==='appr'||S.cat==='short'?NAMES[S.key]+' ':'')+it.t));
+  box.append(el('div',{class:'say'},'<b>한 줄 요약</b> '+it.say+(it.formula?'<br><span class="muted">'+it.formula+'</span>':'')));
+  box.append(el('div',{class:'mem'},'<b>외우기 3줄</b><ol>'+it.mem.map(x=>'<li>'+x+'</li>').join('')+'</ol><span class="muted">비유: '+it.an+'</span>'));
+  const r=el('div',{class:'row'});r.append(btn('▶ 순서대로 (애니메이션+소리)',()=>animate(false),'primary'));if(it.seq)r.append(btn('◀ 내려오며',()=>animate(true)));r.append(btn('다시 전체 보기',draw));
+  if(it.link){const a=el('a',{href:LK(it.link[0],it.link[1]),class:'lessonlink'},'📘 관련 강의 열기 →');r.append(a);}box.append(r);}
+function animate(rev){const it=curItem();if(!it.seq)return;ids.forEach(clearTimeout);ids=[];bd.clear();cur.dots.forEach(d=>bd.dot(d.si,d.f,'','dim'));let arr=it.seq(S.key);if(rev)arr=arr.slice().reverse();
+  arr.forEach((s,i)=>ids.push(setTimeout(()=>{const p=posOf(s.P,0);const nm=noteAt(p.si,p.f),d=((NAMES.indexOf(nm)-S.key)%12+12)%12;bd.dot(p.si,p.f,S.mode==='num'?degName(d):nm,s.kind);if(S.snd)play1(s.P);
+    document.querySelectorAll('#seq .chip').forEach(c=>c.classList.remove('on'));const ch=document.getElementById('sc'+(rev?arr.length-1-i:i));if(ch)ch.classList.add('on');},i*(it.approach?900:520))));}
+function play1(P){try{playPitch(P,0,.5);}catch(e){}}
+function onPick(si,f){const nm=noteAt(si,f),pc=NAMES.indexOf(nm),d=((pc-S.key)%12+12)%12;if(S.snd)try{play(si,f,0,.45);}catch(e){}
+  if(S.hide){S.rev[si+':'+f]=true;draw();}
+  const inS=SCALES.filter(x=>x[2].map(v=>v%12).includes(d)).map(x=>x[1]);
+  const dia=[[0,'maj'],[2,'min'],[4,'min'],[5,'maj'],[7,'maj'],[9,'min'],[11,'dim']];const hold=[];dia.forEach(([r,q],i)=>{const iv=QI[q],rr=(S.key+r)%12;const off=((pc-rr)%12+12)%12;const k=iv.indexOf(off);if(k>=0)hold.push(NAMES[rr]+QS[q]+'의 '+['루트','3도','5도'][k]);});
+  const up=NAMES[(pc+1)%12],dn=NAMES[(pc+11)%12];const octs=[];for(let s2=0;s2<4;s2++)for(let f2=0;f2<=12;f2++)if(NAMES.indexOf(noteAt(s2,f2))===pc&&!(s2===si&&f2===f))octs.push(STR[s2].num+'번줄 '+f2);
+  $('pick').innerHTML='<b>'+STR[si].num+'번줄 '+f+'프렛 = '+nm+'</b> <span class="chip on">'+NAMES[S.key]+' 키에서 '+degName(d)+'</span><table><tr><th>스케일</th><td>'+(inS.length?inS.join(' · '):'없음')+'</td></tr><tr><th>메이저 키 안의 코드톤</th><td>'+(hold.length?hold.join(', '):'없음 (스케일 밖 음)')+'</td></tr><tr><th>어프로치 쓰임</th><td>'+up+'(반음 위)로 가기 전 '+nm+'을 아래서 접근, '+dn+'(반음 아래)로 가기 전 위에서 접근할 수 있어요.</td></tr><tr><th>같은 음 다른 자리</th><td>'+octs.join(', ')+'</td></tr></table>';}
+/* 컨트롤 만들기 */
+function mkKeys(){const g=$('keys');g.innerHTML='';NAMES.forEach((n,i)=>g.append(btn(SHOW[n]||n,()=>{S.key=i;S.rev={};render();},S.key===i?'primary':'')));}
+function mkCats(){const g=$('cats');g.innerHTML='';CATS.forEach(c=>g.append(btn(c.t,()=>{S.cat=c.id;S.item=c.items[0].id;S.rev={};render();},S.cat===c.id?'primary':'')));}
+function mkItems(){const g=$('items');g.innerHTML='';cat(S.cat).items.forEach(x=>g.append(btn(x.t,()=>{S.item=x.id;S.rev={};render();},S.item===x.id?'on':'')));
+  const ex=$('extra');ex.innerHTML='';const it=curItem();if(it.approach){ex.append(el('span',{class:'muted'},'목표 음(어디로 갈까?)'));[[0,'루트'],[4,'3도'],[7,'5도'],[10,'b7']].forEach(([v,t])=>ex.append(btn(t,()=>{S.tgt=v;render();},S.tgt===v?'on':'')));}}
+function mkView(){const v=$('viewbar');v.innerHTML='';v.append(btn(S.mode==='name'?'표시: 음 이름 → 번호로':'표시: 번호 → 음 이름으로',()=>{S.mode=S.mode==='name'?'num':'name';render();}),btn(S.hide?'이름 가리기: 켜짐 (점을 눌러 확인)':'이름 가리고 떠올리기',()=>{S.hide=!S.hide;S.rev={};render();},S.hide?'on':''),btn(S.snd?'🔊 소리 켜짐':'🔇 소리 꺼짐',()=>{S.snd=!S.snd;mkView();},S.snd?'on':''));}
+function render(){mkKeys();mkCats();mkItems();mkView();draw();info();}
+render();
+</script></body></html>

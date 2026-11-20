@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>Chapter 25. 라인 수정과 편곡</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>Chapter 25. 라인 수정과 편곡</h1><span class="pill">Part 6 · 적용과 편곡</span></div>
+  <p class="muted">원곡 라인을 분석하고 수정 레시피 8가지로 내 라인으로 바꾸는 법, 장르 바꾸기, 인트로·엔딩·필인.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰의 <b>무음(벨) 스위치</b>를 끄고 재생 버튼을 한 번 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="../Practice/요약노트.html">요약노트</a> · <a href="../Practice/매일연습.html">매일 연습</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+const PE=['maj-1564','maj-sub','maj-1451','maj-1645','min-1b6b3b7','min-1b7b6b7','blues12','canon'];
+const THEORY={
+md1:`<p><b>라인 수정의 첫 단계는 "분석"</b>이에요. 원곡 라인을 그대로 따라 친 뒤, 세 가지를 적어 보세요.</p>
+<ol><li><b>코드(화성) 층</b>: 마디마다 코드 루트가 무엇인지, 번호로는 몇 번인지.</li><li><b>리듬 층</b>: 한 마디의 음 위치(킥과 같이 치는 칸, 혼자 노는 칸, 쉬는 칸).</li><li><b>음 역할 층</b>: 각 음이 루트·5도·3도·옥타브·접근음·경과음 중 무엇인지.</li></ol>
+<p>이 분석표가 있으면 어디를 바꿀 수 있는지가 보여요. 예: "3박이 루트 → 5도로 바꿀 수 있겠다", "4박에 접근음 자리가 있다", "2·10번째 칸은 쉬어도 되겠다".</p>`,
+md2:`<p><b>수정 레시피 8가지</b>와 효과를 정리하면 이래요.</p>
+<table><tr><th>레시피</th><th>효과</th><th>쓰는 곳</th></tr><tr><td>접근음</td><td>코드 연결이 부드러워짐</td><td>마디 끝</td></tr><tr><td>5도 교체</td><td>힘과 안정감</td><td>3박</td></tr><tr><td>3도 삽입</td><td>코드 색깔이 드러남</td><td>2박</td></tr><tr><td>옥타브 점프</td><td>튀는 에너지</td><td>박 사이</td></tr><tr><td>7도</td><td>다음으로 가려는 긴장</td><td>4박</td></tr><tr><td>고스트노트</td><td>리듬 질감, 펑크</td><td>빈 16분 자리</td></tr><tr><td>쉼표</td><td>숨, 공간</td><td>약박</td></tr><tr><td>당김음</td><td>앞으로 쏠리는 그루브</td><td>3박 등</td></tr></table>
+<p>순서: <b>한 번에 하나만 켜서 소리를 듣고, 좋으면 남기고, 아니면 끄기</b>. 최종 라인은 레시피 2~3개의 조합이 가장 좋아요.</p>`,
+md3:`<p><b>코드 대체(substitution)</b>는 코드를 같은 가족의 다른 코드로 바꾸는 거예요. 같은 가족은 <b>구성음이 두 개 겹치는 코드</b>예요. 대표 쌍: C↔Am, F↔Dm, G↔Em. 베이스가 루트를 바꾸면 위의 코드 연주자가 그대로여도 곡의 분위기가 바뀌어요. 예: C 마디에서 베이스가 A를 치면 C 코드 위에서 Am7 느낌(C 위 A = 6도)이 돼요.</p>
+<p>대체 기본 규칙: ① <b>마디 단위</b>로 ② <b>곡에서 한 번만</b> ③ <b>다른 악기와 사전에 약속</b>. 대체한 코드가 마음에 들면 번호로 적어 두세요(1 → 6).</p>`,
+md4:`<p>같은 코드 진행(예: I–V–vi–IV)도 <b>리듬·음 길이·음 높이</b>만 바꾸면 장르가 달라져요.</p>
+<table><tr><th>장르</th><th>리듬</th><th>음</th><th>길이</th></tr><tr><td>록</td><td>8분 균등</td><td>루트 중심</td><td>중간</td></tr><tr><td>레게</td><td>1박 쉼, 3박 강조</td><td>루트·5도</td><td>길게</td></tr><tr><td>펑크</td><td>16분+고스트</td><td>루트·옥타브·b7</td><td>짧게</td></tr><tr><td>발라드</td><td>4분 위주</td><td>루트·5도</td><td>길게</td></tr><tr><td>재즈</td><td>4분 워킹</td><td>코드톤+접근음</td><td>레가토</td></tr></table>
+<p>장르를 바꾸는 연습은 편곡 실력을 키우는 가장 빠른 방법이에요.</p>`,
+md6:`<p><b>인트로·엔딩·필인</b>은 곡의 앞뒤와 연결 부분을 장식해요. 인트로: 베이스 단독 4마디(리프를 먼저 소개) 또는 드럼+베이스. 엔딩: <b>마지막 코드 루트를 길게 + 앞에서 느려지기(리타르단도)</b>. 필인: 구간 끝 마지막 박에 16분음표/접근음.</p>
+<p>중요한 것은 <b>시작과 끝의 신호</b>가 밴드 전체에 전달되는 것. 예: 엔딩은 마지막 마디에서 1박·2박·3박에 점점 간격을 두고 쳐서 "끝낼 거예요"를 알려 줘요.</p>`,
+md7:`<p>마지막은 <b>내 편곡 만들기</b>예요. 순서: ① 원곡 라인 선택 → ② 분석표 만들기 → ③ 수정 레시피 2~3개 → ④ 인트로·엔딩·필인 설계 → ⑤ 녹음 → ⑥ 원곡과 비교. 이 과정을 곡마다 반복하면 "나만의 베이스 스타일"이 생겨요.</p>`
+};
+const FAQ={
+md1:[["분석표를 꼭 써야 해요?","머릿속으로만 해도 되지만 처음엔 종이에 적는 게 좋아요. 보이면 바꿀 곳이 보여요."]],
+md2:[["레시피를 다 켜면 이상해요.","정상이에요. 2~3개만 고르세요. 많으면 곡의 중심이 사라져요."]],
+md3:[["대체 코드를 써도 되는지 어떻게 알아요?","귀로 판단하세요. 기타·키보드와 같이 쳐서 어색하지 않으면 OK예요."]],
+md4:[["장르를 바꾸면 원곡 느낌이 사라지지 않나요?","연습 목적이에요. 원곡 느낌은 유지하고, 연습 때만 장르를 바꿔 손과 귀를 넓혀요."]],
+md6:[["엔딩을 어떻게 신호해요?","마지막 마디에서 음 길이를 길게 하고 박 간격을 점점 벌려 쳐서(리타르단도) 다른 악기에게 끝을 알려요."]],
+md7:[["내 편곡이 원곡보다 나아요?","비교가 목적이 아니라 '내 선택이 어떤 효과를 냈는지' 이해하는 게 목적이에요."]]
+};
+const LESSONS=[
+ L('md1',15,'원곡 라인 분석하기','코드·리듬·음 역할','원곡 라인을 코드·리듬·음 역할 3층으로 분석하는 법 익히기',
+  '시계를 분해하듯 라인을 부품(음, 리듬, 역할)으로 나눠 봐요. 부품을 알아야 바꿀 수 있어요.',
+  ['반주를 틀고 TAB의 각 음이 루트·5도·3도·옥타브 중 무엇인지 이름 붙이기','킥과 같이 치는 칸에 표시','분석표 1장 완성'],
+  ['음 이름 대신 "루트로부터 몇 번 음인지"로 적으세요(상대 번호).','분석 후 "바꿀 곳 3곳"을 골라 두세요.'],
+  studio({progs:PE,grooves:['pop','rock','funk'],prog:'maj-1564',lines:['r5','r5o','funk','appr','arp'],line:'r5o',bpm:80,hand:true})),
+ L('md2',25,'수정 레시피 8가지','하나씩 켜 보기','8가지 수정 레시피를 하나씩 켜서 효과를 귀로 비교하고 조합해 보기',
+  '요리 레시피 8가지를 하나씩 넣어 맛을 보는 시간이에요.',
+  ['원래 라인(루트 8분음표)을 3바퀴 듣기','레시피를 하나씩 켜서 소리·TAB 변화를 확인','마음에 드는 2~3개 조합을 골라 직접 연주'],
+  ['한 번에 하나씩 켜고, 끄고, 비교하세요(A/B 비교).','조합이 좋으면 "내 라인 1호"로 이름 붙여 적어 두세요.'],
+  studio({progs:PE,grooves:['pop','rock','funk'],prog:'maj-1564',lines:['root8'],line:'mod',mods:MODS,bases:['root8','root4','r5','arp','r5o'],bpm:80,hand:true})),
+ L('md3',20,'코드 대체와 삽입','같은 가족 코드','C↔Am처럼 같은 가족 코드로 바꿔 분위기 변화를 듣기',
+  '쌍둥이 형제 옷 바꿔 입기예요. 겉모습은 비슷한데 분위기가 살짝 달라져요.',
+  ['원래 진행(C G Am F)과 대체 진행(C G C F) 번갈아 듣기','대체 마디에서 베이스가 어떤 음을 치는지 TAB으로 확인','내가 좋아하는 곡 한 군데를 대체해 보기'],
+  ['대체는 곡에서 한 번만. 많으면 곡이 달라져요.','대체한 마디에서도 루트를 단단히 쳐야 해요.'],
+  studio({progs:PE,grooves:['pop','ballad','rock'],prog:'maj-1564',lines:['root4','r5','r5o'],line:'r5',bpm:80,hand:true})),
+ L('md4',25,'장르 바꾸기 실습','한 진행 · 다섯 장르','같은 코드 진행을 록 → 레게 → 펑크 → 발라드로 바꿔 라인 만들기',
+  '같은 노래를 다른 나라 말로 부르는 연습이에요. 뜻(코드)은 같고 억양(리듬)만 달라요.',
+  ['아래 실습의 STEP 1~4를 따라 장르가 바뀌는 걸 확인','각 장르의 리듬 특징을 말로 설명','마음에 드는 장르 1개로 한 곡 완성'],
+  ['장르마다 베이스의 "말투"가 달라요. 리듬(어디서 칠까)부터 바꾸세요.'],
+  studio({key:0,prog:'maj-1564',groove:'rock',bpm:85,progs:PE,grooves:ALLG,lines:['root8','reggae','funk','r5'],line:'root8',hand:true,
+   guide:[{t:'록',say:'8분음표 루트로 일정하게 밀어요.',line:'root8',loops:2,groove:'rock'},{t:'레게',say:'1박은 쉬고 3박에 묵직하게. 쉬는 게 반이에요.',line:'reggae',loops:2,groove:'reggae'},{t:'펑크',say:'16분 고스트와 옥타브로 흔들어요.',line:'funk',loops:2,groove:'funk',bass:false},{t:'발라드',say:'긴 음으로 노래를 받쳐요. 루트-5도 라인.',line:'r5',loops:2,groove:'ballad',bass:false}]})),
+ REST('md5','쉬는 동안 좋아하는 곡의 장르를 말하고 베이스의 말투를 흉내 내 보세요.'),
+ L('md6',20,'인트로·엔딩·필인','곡의 앞과 뒤','인트로, 엔딩, 구간 끝 필인을 직접 설계해 보기',
+  '책의 표지와 마지막 장 같은 부분이에요. 잘 만들면 곡 전체가 인상 깊어요.',
+  ['인트로 4마디를 칸으로 만들기','엔딩에서 박 간격을 늘리는 패턴 만들기','필인은 마지막 박 하나만'],
+  ['엔딩의 마지막 음은 길게 (마지막 박까지 울리게).','인트로는 리프를 먼저 소개하는 용도예요.'],
+  beats({edit:true,bpm:80,sixteenth:true,rows:[{n:'킥',pat:'x.......x.......',snd:'kick'},{n:'스네어',pat:'....x.......x.xx',snd:'snare'},{n:'베이스 (필인)',pat:'x.......x.....xx',snd:'bass',p:12}],note:'마지막 두 칸이 필인이에요. 칸을 바꿔 보세요.'})),
+ L('md7',25,'내 편곡 만들기','분석 → 수정 → 비교','원곡을 분석하고 수정 레시피로 내 편곡을 만들어 연주',
+  '졸업 작품 만들기예요. 남의 곡을 내 목소리로 바꾸는 일이에요.',
+  ['라인 하나를 선택하고 분석표 만들기','수정 레시피 2~3개와 인트로·엔딩 설계','녹음 → 원곡과 비교'],
+  ['한 곡을 완성해서 파일로 남기세요. 다음 달에 들으면 성장이 보여요.'],
+  studio({progs:PE,grooves:ALLG,prog:'maj-1564',lines:['root8','r5','r5o'],line:'mod',mods:MODS,bases:['root8','r5','r5o','arp','funk'],bpm:85,hand:true,builder:true})),
+ FINAL('z25',{key:0,prog:'maj-1564',groove:'pop',bpm:85,progs:PE,lines:['r5','r5o','appr'],line:'r5',guide:GSTEPS('r5','r5o','원래 라인(루트-5도)의 코드·리듬·음 역할을 눈으로 분석해요.','같이 쳐요. 수정 전 라인을 몸에 익혀요.','베이스 소리가 꺼져요. 혼자 쳐요.','옥타브와 접근음을 더한 내 버전으로 쳐요.')},
+  [{q:'라인 분석의 3층은?',o:['코드·리듬·음 역할','음색·크기·속도','키·템포·장르'],a:0,why:'코드, 리듬, 음 역할.'},{q:'수정할 때 가장 좋은 방법은?',o:['한 번에 하나씩 켜서 듣기','한꺼번에 바꾸기','바꾸지 않기'],a:0,why:'하나씩 비교해요.'},{q:'C 대신 쓸 수 있는 같은 가족 코드는?',o:['Am','F#','Bdim'],a:0,why:'C와 Am은 두 음을 공유해요.'},{q:'엔딩에서 신호를 주는 방법은?',o:['박 간격을 점점 벌린다','소리를 키운다','쉰다'],a:0,why:'리타르단도로 끝을 알려요.'}])
+];
+
+startCourse(LESSONS,'bass-ch25-done');
+</script></body></html>

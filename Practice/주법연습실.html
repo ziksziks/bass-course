@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563c9">
+<title>주법 연습실</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>주법 연습실</h1><span class="pill">Practice · 실습실</span></div>
+  <p class="muted">핑거링·피크·고스트노트·슬랩·해머온·레게·워킹. 주법별로 손 애니메이션과 TAB을 보며 연습해요. 모든 챕터에서 이어서 쓸 수 있어요.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 <b>무음(벨) 스위치</b>를 끄고 재생을 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+const TECH=(id,t,s,line,groove,prog,key,hs,goal,an,tips)=>L(id,15,t,s,goal,an,['손 애니메이션과 TAB을 보며 따라 치기','느리게 → 점점 빠르게','녹음해서 들어보기'],tips,studio({progs:['maj-1564','min-1b6b3b7','blues12'],grooves:ALLG,groove,prog,key,lines:[line],line,bpm:70,hand:true,style:hs}));
+const LESSONS=[
+ TECH('y1','핑거링 교대','검-중-검-중','root8','rock','maj-1564',0,undefined,'검지·중지를 번갈아 치는 8분음표','두 발로 걷듯 검지, 중지를 번갈아 써요.',['같은 손가락 연속 금지!','힘을 빼고 일정하게.']),
+ TECH('y2','피크 다운·업','↓↑↓↑','root8','rock','maj-1451',4,'pick','피크로 다운·업 교대 피킹','시소처럼 아래·위로 번갈아.',['박은 ↓, &는 ↑.','손목과 팔꿈치를 같이 써요.']),
+ TECH('y3','고스트노트','음-툭-툭','funk','funk','min-1b7b6b7',9,undefined,'16분음표 사이 고스트노트 넣기','진짜 음은 풍선, 고스트는 작은 방울.',['왼손은 줄에 얹기만!','오른손은 쉬지 않고 움직이기.']),
+ TECH('y4','슬랩 (엄지·팝)','탁-팝','slap','funk','min-1b7b6b7',9,undefined,'엄지 T와 팝 P로 슬랩 라인 치기','베이스로 드럼을 치듯 탁!, 팝!','아프면 쉬세요. 엄지 옆면으로 가볍게.'.split('|')),
+ TECH('y5','해머온·슬라이드','h /','hammer','rock','min-1b7b6b7',9,undefined,'왼손 기교로 음을 이어 붙이기','망치로 톡! 미끄럼틀 쭈욱!',['기교는 양념처럼 조금씩.','해머온은 높이 들어 세게 내려치기.']),
+ TECH('y6','레게 쉼표','1박은 쉬고','reggae','reggae','maj-1451',0,undefined,'쉬는 박으로 그루브 만들기','숨쉬듯 쉬고 내쉬는 레게.',['쉼표도 연주예요.','톤을 굵게!']),
+ TECH('y7','재즈 워킹','산책 걸음','walk','jazz','maj-251',0,undefined,'4분음표로 코드를 연결하며 걷기','한 박에 한 걸음.',['쉬지 않고 걸어요.','마지막 박은 접근음.'])
+];
+startCourse(LESSONS,'bass-practice-tech');
+</script></body></html>

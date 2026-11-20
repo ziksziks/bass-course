@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>Chapter 1. 베이스 지판 외우기</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>Chapter 1. 베이스 지판 외우기</h1><span class="pill">Part 1 · 기초</span></div>
+  <p class="muted">강의 9개. 개방현 → 4번줄 → 3번줄 → 옥타브 → #/b → 60초 게임까지, 베이스 지판 지도를 만드는 첫 걸음이에요.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰의 <b>무음(벨) 스위치</b>를 끄고 재생 버튼을 한 번 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="../Practice/요약노트.html">요약노트</a> · <a href="../Practice/매일연습.html">매일 연습</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+const THEORY={
+l1:`<p><b>개방현</b>은 왼손으로 아무 프렛도 누르지 않고 줄만 튕긴 소리예요. 4현 베이스는 굵은 줄부터 <b>E - A - D - G</b>로 맞춰요(4번줄 E, 3번줄 A, 2번줄 D, 1번줄 G).</p>
+<p>줄과 줄 사이는 항상 <b>완전4도</b>(프렛 5칸)예요. 그래서 "한 줄 위로 올라가면 같은 프렛에서 음이 5칸 높아진다"는 규칙이 모든 줄에서 똑같이 통해요. 기타는 줄 하나(G-B)만 간격이 달라서 번거롭지만, 베이스는 전부 같아서 모양 하나를 어디서든 쓸 수 있어요.</p>
+<ul><li>소리 높이: 4번줄(E, 가장 낮음) → 1번줄(G, 가장 높음)</li><li>TAB: 맨 윗줄 = 1번줄(G), 맨 아랫줄 = 4번줄(E)</li><li>튜닝 주문: <b>E</b>at <b>A</b> <b>D</b>elicious <b>G</b>rape</li></ul>`,
+l2:`<p>음 이름은 <b>A B C D E F G</b> 일곱 개를 반복해요(= 도레미파솔라시). 이 일곱 개를 <b>자연음</b>이라고 불러요.</p>
+<p>자연음 사이의 거리는 두 가지뿐이에요. <b>온음(프렛 2칸)</b>과 <b>반음(프렛 1칸)</b>. 거의 다 온음인데 <b>E→F</b>와 <b>B→C</b> 두 군데만 반음이에요. 그래서 4번줄은 이렇게 돼요.</p>
+<table><tr><th>프렛</th><td>0</td><td>1</td><td>3</td><td>5</td><td>7</td><td>8</td><td>10</td><td>12</td></tr><tr><th>음</th><td>E</td><td>F</td><td>G</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr></table>
+<p>사이사이 빈 프렛(2, 4, 6, 9, 11)은 <b>샵(#)/플랫(b)</b> 음이에요. 12프렛은 개방현과 같은 이름 — 한 바퀴 돌아 <b>옥타브</b>가 돼요.</p>`,
+l3:`<p><b>5프렛 규칙</b>: 줄 사이 간격이 프렛 5칸이라서 <b>4번줄 5프렛 = 3번줄 개방현(A)</b>, 4번줄 10프렛 = 3번줄 5프렛(D)처럼 한 줄 위의 f-5프렛이 같은 음이에요. (튜닝을 귀로 맞출 때 쓰는 바로 그 원리!)</p>
+<p>3번줄(A) 자연음은 4번줄과 똑같은 순서에서 시작음만 달라요.</p>
+<table><tr><th>프렛</th><td>0</td><td>2</td><td>3</td><td>5</td><td>7</td><td>8</td><td>10</td><td>12</td></tr><tr><th>음</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>A</td></tr></table>
+<p>모르는 3번줄 음은 "4번줄에서 같은 음을 찾아 5칸 왼쪽으로" 풀면 돼요. 한 줄만 외우면 나머지 줄은 이 규칙으로 계산돼요.</p>`,
+l4:`<p><b>옥타브</b>는 같은 이름의 높은 음이에요. 소리 과학으로는 진동수가 정확히 <b>2배</b>가 되는 음이고, 반음으로는 <b>12칸</b> 차이예요(그래서 12프렛 = 개방현의 옥타브).</p>
+<p>줄 하나 올라가면 +5칸이니 두 줄 위는 +10칸. 옥타브(+12)까지 <b>프렛 2칸을 더 가면</b> 돼요. 그래서 공식은 <b>"두 줄 위, 오른쪽으로 2칸"</b>.</p>
+<p>이 모양은 어떤 음에서 시작해도 똑같아서, 4번·3번줄만 외우면 2번·1번줄은 옥타브 모양으로 찾을 수 있어요.</p>`,
+l6:`<p>피아노에서 흰 건반 사이 검은 건반이 있듯, 자연음 사이에는 반음 음들이 있어요. <b>샵(#)은 반음 올리기(오른쪽 1칸), 플랫(b)은 반음 내리기(왼쪽 1칸)</b>.</p>
+<p>한 칸에는 이름이 두 개예요(<b>이명동음</b>): A#=Bb, C#=Db, D#=Eb, F#=Gb, G#=Ab. 어느 이름을 쓸지는 키(조)에 따라 달라요.</p>
+<p>열두 음 전체: <code>C C# D D# E F F# G G# A A# B</code> (E-F, B-C 사이에는 샵이 없다는 점만 기억!)</p>`,
+l7:`<p>이제 지식을 <b>속도</b>로 바꾸는 단계예요. 머릿속 계산 순서(작전)를 정해 두면 3초 안에 답이 나와요.</p>
+<ol><li>표시점(3·5·7·9·12프렛)이 가까우면 거기서 센다.</li><li>아니면 4번·3번줄에서 같은 프렛 숫자를 보고 5프렛 규칙을 쓴다.</li><li>1번·2번줄이면 "두 줄 아래, 2칸 왼쪽"(옥타브)으로 내려가서 푼다.</li></ol>
+<p>틀린 자리는 지우지 말고 모아 두세요. 내 약점 지도가 돼요.</p>`,
+l8:`<p>한 음은 넥 안에 여러 곳 살아요. 4번줄에서 찾았다면 <b>① 5프렛 규칙(한 줄 위 -5프렛)</b> ② <b>옥타브(두 줄 위 +2프렛)</b> ③ 한 줄 더 위로 같은 규칙 반복 — 이렇게 모든 위치가 계산돼요.</p>
+<p>곡 중에는 "지금 손에서 가까운 자리"를 고르면 이동이 줄어요. 음을 외우는 목표는 "이름→위치 한 곳"이 아니라 "이름→위치 여러 곳"이에요.</p>`,
+lb1:`<p><b>왜 한 줄 전체를 외울까?</b> 낱개로 외우면 13개를 따로 기억해야 하지만, 12음 순서는 단 하나라서 한 번 외우면 모든 줄에 써요. 줄은 12음 순서가 한 칸씩 올라가는 사다리고, 줄마다 <b>시작 음만 달라요</b>.</p>
+<table><tr><th>줄</th><td>0프렛</td><td colspan="2">...</td><td>12프렛</td></tr><tr><th>4번줄</th><td>E</td><td colspan="2">F F# G G# A A# B C C# D D#</td><td>E</td></tr><tr><th>3번줄</th><td>A</td><td colspan="2">A# B C C# D D# E F F# G G#</td><td>A</td></tr></table>
+<p>외우는 법: ① 소리 내어 쭉 읽기 ② 가리고 떠올리기 ③ 빈칸 채우기. 이 세 단계를 한 줄씩 완성하세요.</p>`,
+lb2:`<p><b>블록(덩어리) 기억법</b>: 사람은 낱개 12개보다 덩어리 3개를 더 잘 기억해요(챙킹). 지판을 이렇게 묶어요.</p>
+<ul><li><b>기둥(세로 블록)</b>: 같은 프렛을 4줄 위아래로 묶음. 5프렛 기둥 = A·D·G·C, 12프렛 기둥 = E·A·D·G</li><li><b>쌍둥이 블록</b>: 4번줄 (f+5프렛) = 3번줄 f프렛, 두 칸이 같은 음</li></ul>
+<p>가로로만 읽으면 느리고, 세로·대각선 블록이 섞이면 지판 전체가 연결된 그림으로 보이기 시작해요.</p>`,
+l9:`<p>이 실습은 <b>이론 → 손 → 눈</b>을 이어 줘요. TAB 숫자(프렛)를 읽고, 지판 화면에서 위치를 확인하고, 소리를 들어요. 한 번 칠 때마다 "이 음 이름은?"을 소리 내어 말해 보세요. 눈·귀·입이 같이 일하면 기억이 두 배로 단단해져요.</p>`,
+lb3:`<p>베이스는 한 줄에 머물지 않아요. 실제 연주는 거의 항상 <b>두세 줄을 오가요</b>. 그래서 지판을 "줄 하나"가 아니라 <b>"줄 묶음"</b>으로 봐야 해요.</p>
+<ul><li><b>두 줄 세트</b>: 4·3번줄(E-A), 3·2번줄(A-D), 2·1번줄(D-G). 대부분의 라인은 이 두 줄 안에서 만들어져요.</li><li><b>네 줄 사각형</b>: 한 손이 닿는 5~6프렛 폭의 네 줄 전체. 사각형이 3개면 넥 12프렛을 거의 덮어요.</li></ul>
+<p><b>줄을 넘는 열쇠는 5프렛 규칙</b>이에요. 줄 하나의 5프렛이 한 줄 위의 개방현과 같은 음이라서, E F G A 다음에 A B C D, 그다음 D E F G, G A B C로 계속 이어져요. 줄 4개가 사실은 하나의 긴 계단인 거예요.</p>`,
+z1:`<p>이 실습은 <b>3단계 학습법</b>이에요. ① 보고 듣기(이해) → ② 같이 치기(모방) → ③ 혼자 치기(독립). 베이스 소리가 꺼지는 STEP 3~4에서 내가 직접 쳐야 진짜 실력이 돼요.</p><p>시작하면 <b>1마디 카운트</b>(딸깍 4번) 뒤에 반주가 나와요. <b>한 바퀴</b>는 코드 진행 한 번(보통 4마디, 블루스는 12마디)이고, 단계마다 정해진 바퀴 수만큼 반복한 뒤 자동으로 다음 단계로 넘어가요. 키·진행·리듬·빠르기는 위 메뉴에서 바꿀 수 있어요.</p>`
+};
+
+const FAQ={
+l1:[["4번줄이 맨 아래인데 왜 '4번'이에요? 숫자가 거꾸로 같아요.","줄 번호는 <b>높은 소리부터</b> 세요. 가장 높은 G가 1번, 가장 굵고 낮은 E가 4번이에요. 지판을 내려다볼 때 굵은 줄이 위쪽에 보여서 헷갈리니, 'TAB에서는 맨 아래 선이 4번줄(E)'이라고 연결해 외우세요."],["튜닝이 정확한지 어떻게 알아요?","튜너 앱이나 클립 튜너를 쓰세요. 귀로는 '4번줄 5프렛 = 3번줄 개방현'이 같은 소리인지 비교하는 방법이 있어요(Chapter 1 강의 3)."]],
+l2:[["왜 E와 F 사이가 1프렛이에요? 항상 2프렛 아닌가요?","음 이름 7개 중 <b>E-F와 B-C 두 곳만</b> 반음(1프렛) 거리예요. 나머지는 온음(2프렛). 피아노에서 이 두 곳 사이에 검은 건반이 없는 것과 같아요."],["한 줄만 외우면 되나요?","한 줄(4번줄)을 외우면 나머지 줄은 같은 순서에 시작 음만 달라요. 하지만 연주는 여러 줄을 오가니, 다음 강의에서 3번줄을 붙이고 '네 줄 한꺼번에' 강의로 이어 가요."]],
+l3:[["5프렛 규칙이 정확히 뭐예요? 5가 어디서 나와요?","줄과 줄 사이 음 거리가 반음 5칸(완전4도)이라서요. 4번줄 5프렛이 한 줄 위 개방현과 같은 음이에요. 그래서 '한 줄 위로 가면 프렛 숫자 -5'로 계산해요."],["3번줄을 외울 때 4번줄과 헷갈려요.","음 이름 순서는 같고 <b>시작 음만</b>(E→A) 달라요. 3번줄 5프렛이 D, 7프렛이 E처럼 표시점(3·5·7)만 먼저 외우고 나머지를 세어 가세요."]],
+l4:[["옥타브는 왜 '두 줄 위 + 2칸'이에요?","두 줄 위는 +10반음, 옥타브는 +12반음이라서 '2칸 더 오른쪽'이에요. 계산으로 외우지 말고 모양(대각선)으로 기억하세요."],["옥타브 모양을 칠 때 손가락은?","보통 낮은 음은 검지(또는 중지), 높은 음은 약지(또는 새끼)예요. 팔을 크게 벌리지 않고 손 모양 그대로 줄만 건너뛰어요."]],
+l6:[["A#과 Bb는 다른 음인가요?","피아노·기타·베이스에서는 같은 소리예요(이명동음). 어떤 이름을 쓸지는 키에 따라 정해져요. 지금은 둘 다 같은 칸이라고만 알아 두세요."],["E#이나 B#은 있나요?","이론적으로는 있지만(E#=F, B#=C) 실제 악보에서는 거의 안 써요. E-F, B-C 사이에는 샵이 없다고 기억하면 충분해요."]],
+l7:[["3초 안에 못 맞혀요.","정상이에요. '표시점(3·5·7) → 5프렛 규칙 → 옥타브' 순서로 풀면 점점 빨라져요. 틀린 자리만 모아 5번씩 치면 가장 빨리 늘어요."],["1번·2번줄은 너무 어려워요.","1번·2번줄은 외우지 말고 '두 줄 아래 +(-2)칸'으로 4번·3번줄 음에서 계산해 보세요. 계산이 익숙해지면 눈으로 바로 보여요."]],
+l8:[["같은 음이 여러 곳 있는데 어디서 쳐야 해요?","지금 손에서 가장 가까운 곳을 고르세요. 곡 전체를 보고 이동이 적은 자리가 정답이에요."]],
+l9:[["TAB의 숫자가 뭐예요?","TAB의 선은 줄 4개, 숫자는 그 줄에서 누를 프렛이에요. 0은 개방현(안 누름)이에요. 지판 화면과 같이 보며 연결하세요."],["소리가 안 나요.","브라우저 소리를 켜고, ▶ 재생 버튼을 한 번 눌러야 소리가 시작돼요(브라우저 정책). 그래도 안 나면 볼륨과 음소거를 확인하세요."]],
+lb1:[["12음 사다리 순서를 못 외우겠어요.","C C# D D# E F F# G G# A A# B 를 노래처럼 반복해 보세요. 한 줄은 그 순서의 시작점만 달라요(E줄은 E부터, A줄은 A부터)."],["'이름 가리고 떠올리기'에서 틀리면?","점을 눌러 이름을 확인하고, 그 줄의 앞뒤 음을 같이 읽어 보세요. 한 칸이 아니라 흐름으로 외우는 게 포인트예요."]],
+lb2:[["기둥이 뭐예요? 왜 세로로 외워요?","같은 프렛을 네 줄에 걸쳐 묶은 세로줄이에요. 5프렛 기둥은 A·D·G·C로, 한 줄 위 개방현 이름과 이어져요. 가로·세로를 같이 외우면 지판이 하나의 그림으로 이어져요."]],
+lb3:[["줄을 넘어갈 때 손이 꼬여요.","처음엔 5프렛에서 위 줄 개방현으로 '이어 가기'만 연습하세요. 손 위치를 바꾸지 않고 줄만 건너뛰도록, 팔 전체가 같이 움직이는 느낌이에요."],["두 줄 세트와 네 줄 사각형은 어떻게 연습해요?","먼저 두 줄 세트 하나(4·3번줄)를 완벽히, 그다음 옆 세트로 옮겨요. 사각형은 '손이 한 번에 닿는 범위'라서 사각형 하나 안에서는 손을 안 옮기고 칠 수 있어요."]],
+z1:[["단계가 너무 빨리 넘어가요.", "빠르기(BPM) 슬라이더를 먼저 낮추세요. 처음 단계를 더 하고 싶으면 ■ 정지 후 다시 ▶ 를 눌러 처음부터 반복하세요."], ["베이스 소리가 꺼져서 고장 난 줄 알았어요.", "STEP 3·4는 일부러 꺼져요. 내가 칠 차례라는 뜻이에요. 위 '베이스 소리' 체크로 언제든 다시 켤 수 있어요."]]
+};
+
+const LESSONS=[
+ {id:'l1',min:10,t:'개방현 이름',s:'E A D G',
+  tips:["개방현은 아래부터 E-A-D-G. 줄 번호는 거꾸로라서 \"굵은 줄이 4번\"만 기억하면 안 헷갈려요.", "연습 전에 튜너 앱으로 튜닝부터! 음이 틀리면 귀가 헷갈려요."],
+  goal:'4개 줄을 안 보고 바로 말하기',
+  an:'줄은 아파트 4개 동이에요. 맨 아래(굵은 줄)가 4번 동 E, 그 위로 A, D, G. 외우는 주문: "Eat A Delicious Grape(맛있는 포도를 먹어요)".',
+  todo:['소리 듣기 버튼으로 4줄을 하나씩 들어 보기','실제 베이스로 개방현을 치면서 이름을 소리 내어 말하기 (4→1번줄, 1→4번줄)','퀴즈 10개 연속 정답'],
+  build:t=>{const wrap=el('div',{class:'boardwrap'});const b=Board(wrap);
+    const r=el('div',{class:'row'});
+    r.append(btn('소리 듣기 (4→1번줄)',()=>{b.clear();seq([3,2,1,0].map(si=>()=>{b.dot(si,0,STR[si].n,'root');play(si,0);}),700);},'primary'));
+    const pr=el('div',{class:'prompt'}),fbk=el('div',{class:'fb'}),nb=el('div',{class:'names',style:'grid-template-columns:repeat(4,minmax(0,1fr));max-width:320px'});
+    let cur=null,streak=0;
+    function q(){cur=Math.floor(Math.random()*4);b.clear();b.dot(cur,0,'?','q');play(cur,0);pr.textContent=STR[cur].num+'번줄 개방현의 이름은?';}
+    ['E','A','D','G'].forEach(n=>nb.append(btn(n,()=>{if(cur===null)return;const ok=STR[cur].n===n;chime(ok);streak=ok?streak+1:0;
+      fbk.className='fb '+(ok?'ok':'no');fbk.textContent=ok?'정답! 연속 '+streak+'개'+(streak>=10?' — 강의 2로 넘어가도 돼요':''):STR[cur].num+'번줄은 '+STR[cur].n+'예요.';b.clear();b.dot(cur,0,STR[cur].n,ok?'good':'bad');setTimeout(q,ok?700:1400);})));
+    r.append(btn('퀴즈 시작',()=>{streak=0;fbk.textContent='';q();}));
+    t.append(r,wrap,pr,nb,fbk);}},
+ {id:'l2',min:20,t:'4번줄 자연음',s:'E F G A B C D E',
+  tips:["표시점 3·5·7 = G·A·B 를 먼저 외우면, 나머지는 거기서 한두 칸만 세면 돼요.", "음 이름을 소리 내어 말하면서 치세요. 눈·입·손이 같이 움직이면 훨씬 빨리 외워져요."],
+  goal:'4번줄 0·1·3·5·7·8·10·12프렛 음 이름 외우기',
+  an:'알파벳 친구들(A~G)이 2칸씩 떨어져 서 있어요. 단, E-F와 B-C는 단짝이라 1칸만 떨어져요. 표시점(3·5·7·9·12)은 동네 큰길 표지판이에요.',
+  todo:['애니메이션을 보며 따라 치기 (0→12프렛, 음 이름 말하기)','표시점에 있는 음 먼저: 3=G, 5=A, 7=B, 12=E','찾기 퀴즈 맞힘 15개'],
+  build:t=>{const r=el('div',{class:'row'});const aw=el('div',{class:'boardwrap'});const a=Board(aw);
+    const fs=[0,1,3,5,7,8,10,12];
+    r.append(btn('애니메이션: 4번줄 따라가기',()=>{a.clear();seq(fs.map((f,k)=>()=>{a.dot(3,f,noteAt(3,f),(f===1||f===8)?'warn':(f===0||f===12)?'root':'note');play(3,f);}),650);},'primary'));
+    t.append(r,aw,el('p',{class:'muted'},'노란 점(F, C)은 바로 앞 음과 1칸만 떨어진 음이에요. E→F, B→C.'));
+    const q=el('div',{class:'tool'});t.append(q);
+    findQuiz(q,{strings:[3],pool:['E','F','G','A','B','C','D'],hint:n=>'표시점부터 세어 보세요. 3=G, 5=A, 7=B.'});}},
+ {id:'l3',min:20,t:'3번줄 자연음',s:'5프렛 규칙',
+  tips:["5프렛 규칙: 4번줄 5프렛 = 3번줄 개방현. 튜너 없이 튜닝할 때도 쓰는 규칙이에요.", "모르는 3번줄 음은 4번줄에서 5칸 왼쪽의 같은 음을 찾으면 돼요."],
+  goal:'3번줄 음 이름 외우고, 4번줄과 3번줄을 섞어서 찾기',
+  an:'4번줄 5프렛과 3번줄 개방현은 같은 A예요. 아래층 5번째 계단 = 위층 1층. 그래서 3번줄은 4번줄을 5칸 당겨 놓은 것과 같아요.',
+  todo:['애니메이션으로 "4번줄 5프렛 = 3번줄 0프렛" 소리 비교','3번줄 따라 치기: A B C D E F G A','4번·3번줄 섞어 찾기 퀴즈 맞힘 15개'],
+  build:t=>{const r=el('div',{class:'row'});const aw=el('div',{class:'boardwrap'});const a=Board(aw);
+    r.append(btn('같은 A 듣기',()=>{a.clear();seq([()=>{a.dot(3,5,'A','root');play(3,5);},()=>{a.dot(2,0,'A','root');a.link([3,5],[2,0]);play(2,0);},()=>{a.dot(3,10,'D','note');play(3,10);},()=>{a.dot(2,5,'D','note');a.link([3,10],[2,5]);play(2,5);}],900);},'primary'));
+    r.append(btn('3번줄 따라가기',()=>{a.clear();seq([0,2,3,5,7,8,10,12].map(f=>()=>{a.dot(2,f,noteAt(2,f),(f===3||f===8)?'warn':(f===0||f===12)?'root':'note');play(2,f);}),650);}));
+    t.append(r,aw);const q=el('div',{class:'tool'});t.append(q);
+    findQuiz(q,{strings:[3,2],pool:['E','F','G','A','B','C','D'],hint:n=>'3번줄은 4번줄보다 5칸 왼쪽에 같은 음이 있어요.'});}},
+ {id:'l4',min:20,t:'옥타브 모양',s:'두 줄 위 +2칸',
+  tips:["옥타브 모양은 \"두 줄 위 + 두 칸 오른쪽\" 하나만 기억하세요. 1번·2번줄을 따로 외울 필요가 없어져요.", "옥타브를 번갈아 치면 같은 음 이름인데 높이만 달라서 귀로 확인하기 좋아요."],
+  goal:'4번·3번줄 음에서 옥타브로 2번·1번줄 음 찾기',
+  an:'옥타브는 같은 이름의 "형 음"이에요. 집에서 두 층 올라가고 오른쪽으로 두 칸 가면 형이 살아요. 이 모양 하나로 2번·1번줄을 따로 외울 필요가 없어져요.',
+  todo:['지판의 4번·3번줄 아무 곳이나 눌러 옥타브 위치 보기','검지로 아래 음, 약지나 새끼로 옥타브를 짚고 번갈아 치기','옥타브 찾기 퀴즈 맞힘 15개'],
+  build:t=>{const fbk=el('div',{class:'fb muted'},'4번줄이나 3번줄 아무 칸이나 눌러 보세요.');const aw=el('div',{class:'boardwrap'});
+    const a=Board(aw,{onPick:(si,f)=>{a.clear();if(si<2||f>10){fbk.textContent='4번·3번줄의 0~10프렛을 눌러 보세요.';return;}
+      const n=noteAt(si,f);a.dot(si,f,n,'root');a.dot(si-2,f+2,n,'root');a.link([si,f],[si-2,f+2]);play(si,f,0,.4);play(si-2,f+2,.45,.5);
+      fbk.textContent=STR[si].num+'번줄 '+f+'프렛 '+(SHOW[n]||n)+' → '+STR[si-2].num+'번줄 '+(f+2)+'프렛 '+(SHOW[n]||n)+' (두 줄 위, +2칸)';}});
+    t.append(aw,fbk);
+    const q=el('div',{class:'tool'});const pr=el('div',{class:'prompt'}),f2=el('div',{class:'fb'}),sc=el('div',{class:'score muted'});
+    let cur=null,score=0,tries=0;const bw=el('div',{class:'boardwrap'});
+    const b=Board(bw,{onPick:(si,f)=>{if(!cur)return;tries++;play(si,f,0,.4);const ok=si===cur[0]-2&&f===cur[1]+2;
+      b.clear();b.dot(cur[0],cur[1],noteAt(cur[0],cur[1]),'root');
+      if(ok){score++;chime(true);b.dot(si,f,noteAt(si,f),'good');b.link(cur,[si,f]);f2.className='fb ok';f2.textContent='정답!';setTimeout(nq,1100);}
+      else{chime(false);b.dot(si,f,noteAt(si,f),'bad');f2.className='fb no';f2.textContent='두 줄 위('+STR[cur[0]-2].num+'번줄), 오른쪽으로 두 칸이에요.';}
+      sc.textContent='맞힘 '+score+' / 시도 '+tries;}});
+    function nq(){const si=rnd([3,2]),f=rnd([0,1,2,3,4,5,6,7,8,9,10].filter(x=>isNat(noteAt(si,x))));cur=[si,f];b.clear();b.dot(si,f,noteAt(si,f),'root');
+      pr.textContent=STR[si].num+'번줄 '+f+'프렛 '+noteAt(si,f)+'의 옥타브를 '+STR[si-2].num+'번줄에서 눌러 보세요';f2.textContent='';}
+    const r=el('div',{class:'row'});r.append(btn('옥타브 퀴즈 시작',()=>{score=0;tries=0;sc.textContent='';nq();},'primary'));
+    q.append(r,pr,bw,f2,sc);t.append(q);}},
+ L('lb1',15,'줄 전체 외우기','12음 사다리','한 줄(0~12프렛) 전체를 "한 줄 노래"처럼 이어서 말하고, 눈 감고도 떠올리기',
+  '줄 하나는 12칸짜리 계단이에요. 계단은 한 칸마다 음이 하나씩 올라가고, 12칸을 오르면 같은 이름의 방이 또 나와요. 낱개 칸이 아니라 "계단 전체"를 한 번에 외우는 거예요.',
+  ['4번줄 전체를 켜고 소리 쭉 듣기','이름 가리기를 켜고 점을 눌러 확인하며 떠올리기','빈칸 채우기 퀴즈로 3개씩 확인','3번줄, 2번줄, 1번줄도 같은 방법으로'],
+  ['한 줄을 "E F F# G G# A A# B C C# D D# E"처럼 노래하듯 말하세요. 리듬이 있으면 기억이 오래가요.','줄이 바뀌어도 순서는 똑같고 시작 음만 달라요. 한 줄을 외우면 네 줄을 외운 거나 같아요.'],
+  memo({blocks:stringBlocks()})),
+ L('lb2',15,'블록으로 외우기','기둥과 쌍둥이','가로(줄)가 아니라 세로(기둥)와 쌍둥이 블록으로 지판을 묶어서 외우기',
+  '건물에는 가로 복도(줄)도 있지만 세로 기둥도 있어요. 같은 프렛을 위아래로 묶은 "기둥"과, 4번줄 5프렛=3번줄 개방현 같은 "쌍둥이 한 쌍"을 한 덩어리로 기억하면 훨씬 빨라요.',
+  ['기둥 블록(0·3·5·7·12프렛)의 네 음을 한 번에 말하기','쌍둥이 블록을 눌러 두 음이 같은 음인지 소리로 확인','이름 가리기로 스스로 시험'],
+  ['5프렛 기둥은 "A D G C" = 한 줄 위 개방현 + 마지막 줄 C. 외우기 쉬워요.','12프렛 기둥은 개방현과 똑같은 "E A D G"예요. 한 바퀴 돌아왔다는 표시!'],
+  both(memo({blocks:pillarBlocks([0,3,5,7,12])}),memo({blocks:pairBlocks([0,2,3,5,7])}))),
+ L('lb3',20,'네 줄을 한꺼번에','여러 줄 이어 읽기','한 줄씩이 아니라 두 줄·세 줄·네 줄을 묶어 읽고, 줄을 넘나들며 음 찾기',
+  '네 줄은 4층짜리 계단이 이어진 건물이에요. 한 층만 오르내리면 지루하죠? 베이스는 줄을 넘나들며 치는 악기라서, 한 층이 끝나면 위층 계단으로 자연스럽게 넘어가는 눈이 필요해요.',
+  ['사슬 애니메이션으로 4번줄 → 1번줄이 이어지는 걸 보기','두 줄 세트(4·3번줄 등)와 네 줄 사각형 블록을 읽기','4줄 전체에서 음 찾기 퀴즈 맞힘 15개'],
+  ['한 줄의 끝(5프렛)은 한 줄 위의 처음(개방현)이에요. "5프렛 → 개방현"으로 줄을 넘어가면 음이 끊기지 않고 이어져요.','처음엔 두 줄 세트(4·3번줄)만 완벽하게, 그다음 3·2번줄로 옮겨 가세요.'],
+  both(steps(chainSteps(),{gap:3200}),memo({blocks:multiBlocks()}),t=>findQuiz(t,{strings:[3,2,1,0],pool:['E','F','G','A','B','C','D'],hint:n=>'네 줄 중 어디든 괜찮아요. 5프렛 규칙으로 줄을 넘어가 보세요.'}))),
+ {id:'l5',min:5,t:'쉬는 시간',s:'손 풀기',rest:true,
+  tips:["쉴 때 손가락과 어깨 힘을 빼세요. 손이 아프면 바로 멈추는 게 실력이 느는 지름길이에요."],
+  goal:'손목과 손가락 쉬기',
+  an:'근육도 외운 걸 정리할 시간이 필요해요. 쉬는 동안 머릿속으로 "4번줄 5프렛은? 3번줄 3프렛은?" 하고 떠올려 보세요.',
+  todo:['손가락 쥐었다 펴기 10번, 손목 돌리기','물 마시기','머릿속으로 4번줄 표시점 음 말해 보기: 3=G, 5=A, 7=B, 12=E'],
+  build:t=>{}},
+ {id:'l6',min:15,t:'샵(#)과 플랫(b)',s:'한 칸 옆 친구',
+  tips:["E-F, B-C 사이에는 #이 없어요(단짝). 이것만 알면 샵·플랫의 절반은 끝!", "#은 올라가는 계단(오른쪽), b은 내려가는 계단(왼쪽)이라고 기억하세요."],
+  goal:'자연음 옆 칸의 이름 붙이기 (C#, Bb 등)',
+  an:'샵(#)은 "한 칸 오른쪽(높게)", 플랫(b)은 "한 칸 왼쪽(낮게)"이에요. A와 B 사이 칸은 A# 이라고도, Bb 이라고도 불러요. 한 집에 별명이 두 개인 거예요.',
+  todo:['애니메이션으로 A → A# → B, B → Bb → A 보기','자연음을 짚고 한 칸 오른쪽(#)·왼쪽(b)을 쳐 보기','12개 음 전체 찾기 퀴즈 맞힘 15개'],
+  build:t=>{const r=el('div',{class:'row'});const aw=el('div',{class:'boardwrap'});const a=Board(aw);
+    r.append(btn('애니메이션: 한 칸 옆',()=>{a.clear();seq([()=>{a.dot(3,5,'A','root');play(3,5);},()=>{a.dot(3,6,'A#','warn');play(3,6);},()=>{a.dot(3,7,'B','root');play(3,7);},
+      ()=>{a.clear();a.dot(2,3,'C','root');play(2,3);},()=>{a.dot(2,2,'B','note');play(2,2);},()=>{a.dot(2,4,'C#','warn');play(2,4);}],800);},'primary'));
+    t.append(r,aw,el('p',{class:'muted'},'E와 F, B와 C 사이에는 칸이 없어서 E#, B# 같은 음은 거의 쓰지 않아요.'));
+    const q=el('div',{class:'tool'});t.append(q);
+    findQuiz(q,{strings:[3,2],pool:NAMES,hint:n=>n.indexOf('#')>0?'#은 '+n[0]+'에서 한 칸 오른쪽이에요.':'자연음이에요. 표시점부터 세어 보세요.'});}},
+ {id:'l7',min:20,t:'넥 전체 게임',s:'60초 도전',
+  tips:["틀린 자리는 모아 두고 5번씩 쳐 주세요. 다음 판에 제일 많이 늘어요.", "하루 1~2판 짧게가 한 번에 오래 하는 것보다 효과적이에요."],
+  goal:'0~12프렛 아무 곳이나 보고 3초 안에 이름 말하기',
+  an:'이제 동네 전체 지도 시험이에요. 모르면 "4번줄·3번줄에서 찾고 옥타브로 올라가기" 작전을 쓰세요.',
+  todo:['60초 게임 3판 (판마다 점수 적기)','자주 틀린 자리 확인하고 실제 베이스로 5번씩 치기','마지막 판은 소리만 듣고 위치와 이름 같이 말하기'],
+  build:t=>{const r=el('div',{class:'row'});const tm=el('span',{class:'timer'},'60');const sc=el('span',{class:'score muted'},'점수 0');
+    const aw=el('div',{class:'boardwrap'});const a=Board(aw);const nb=el('div',{class:'names'});const fbk=el('div',{class:'fb'});
+    let cur=null,score=0,left=0,iv=null,miss={};
+    function nq(){const si=Math.floor(Math.random()*4),f=Math.floor(Math.random()*13);cur=[si,f];a.clear();a.dot(si,f,'?','q');play(si,f,0,.4);}
+    function end(){clearInterval(iv);iv=null;cur=null;a.clear();const ks=Object.keys(miss);
+      ks.forEach(k=>{const [si,f]=k.split(',').map(Number);a.dot(si,f,noteAt(si,f),'bad');});
+      fbk.className='fb';fbk.textContent='끝! 점수 '+score+'점. '+(ks.length?'빨간 점이 틀린 자리예요. 베이스로 직접 쳐 보세요.':'틀린 곳이 없어요!');}
+    NAMES.forEach(n=>nb.append(btn(SHOW[n]||n,()=>{if(!cur)return;const ans=noteAt(cur[0],cur[1]),ok=ans===n;chime(ok);
+      if(ok){score++;fbk.className='fb ok';fbk.textContent='정답';}else{miss[cur.join(',')]=1;fbk.className='fb no';fbk.textContent=STR[cur[0]].num+'번줄 '+cur[1]+'프렛은 '+(SHOW[ans]||ans);}
+      sc.textContent='점수 '+score;nq();})));
+    r.append(btn('60초 시작',()=>{score=0;miss={};left=60;tm.textContent=left;sc.textContent='점수 0';fbk.textContent='';if(iv)clearInterval(iv);nq();
+      iv=setInterval(()=>{left--;tm.textContent=left;if(left<=0)end();},1000);},'primary'),el('span',{class:'muted'},'남은 시간'),tm,sc);
+    t.append(r,aw,nb,fbk);}},
+ {id:'l8',min:10,t:'정리 + 다음 단계',s:'같은 음 전부 찾기',
+  tips:["같은 음이 넥에 여러 곳 있어요. 지금 손에서 가장 가까운 곳을 고르면 이동이 줄어요.", "다음 Chapter 2에서는 음 이름 대신 \"루트에서 몇 번째\"로 읽는 법을 배워요."],
+  goal:'한 음을 넥 전체에서 3곳 이상 바로 찾기',
+  an:'같은 이름의 음은 넥 곳곳에 살아요. 하나를 찾으면 "5칸 왼쪽 위층"(같은 음)과 "두 층 위 +2칸"(옥타브)으로 나머지를 다 찾을 수 있어요.',
+  todo:['아래에서 음을 골라 넥 전체 위치 보기 (C, G, D부터)','오늘 배운 길 3개 말해 보기: 표시점, 5프렛 규칙, 옥타브','다음 시간: 루트 주변 "음정 지도" → 메이저 스케일'],
+  build:t=>{const nb=el('div',{class:'names'});const aw=el('div',{class:'boardwrap'});const a=Board(aw);const fbk=el('div',{class:'fb muted'},'음을 골라 보세요.');
+    NAMES.forEach(n=>nb.append(btn(SHOW[n]||n,()=>{a.clear();let c=0,k=0;[3,2,1,0].forEach(si=>{for(let f=0;f<=12;f++)if(noteAt(si,f)===n){c++;const kk=k++;setTimeout(()=>{a.dot(si,f,n,si>=2?'root':'note');play(si,f,0,.35);},kk*260);}});
+      fbk.textContent=(SHOW[n]||n)+'는 0~12프렛 안에 '+c+'곳 있어요. 진한 점(4·3번줄)을 기준으로 옥타브를 따라가 보세요.';})));
+    t.append(nb,aw,fbk);}},
+ L('l9',15,'실습실: 자연음 위치 따라 치기','개방현·자연음 놀이터','반주 위에서 루트 음(자연음)을 정확한 줄·프렛에서 치기',
+  '이제 배운 지판 지도를 놀이터에서 써 봐요. 코드가 바뀔 때마다 새 반장(루트)의 자리를 눈으로 찾아가요.',
+  ['반주 틀고 TAB의 루트 따라 치기','지판 화면에서 어디를 치는지 눈으로 확인','키를 바꿔 같은 방식 반복'],
+  ['먼저 TAB 숫자(프렛)를 보고, 그다음 지판에서 위치를 확인하세요. 눈 두 번 확인이 암기를 단단하게 해요.','4번줄·3번줄 음 이름을 말하면서 치면 더 빨리 외워져요.'],
+  studio({progs:['maj-1564','maj-1451','min-1b6b3b7'],grooves:['ballad','pop'],prog:'maj-1451',lines:['root4','r5'],line:'root4',bpm:65,hand:true}))
+
+ ,FINAL('z1',{key:0,prog:'maj-1451',groove:'ballad',bpm:65,lines:["root4", "r5"],line:'root4',guide:GSTEPS('root4','r5',"TAB의 프렛 숫자와 지판의 불빛을 눈으로 따라가며 \"이 음 이름은?\"을 마음속으로 말해요.","불빛을 따라 4번·3번줄에서 루트를 같이 쳐요. 음 이름을 소리 내어 말해요.","베이스 소리가 꺼져요. TAB만 보고 루트를 혼자 쳐요.","루트 사이에 5도를 넣어 나만의 버전으로 쳐 보세요.")},[{"q": "4번줄 5프렛과 같은 소리를 내는 곳은?", "o": ["3번줄 개방현", "3번줄 5프렛", "2번줄 개방현"], "a": 0, "why": "5프렛 규칙: 한 줄 위 개방현과 같아요."}, {"q": "E와 F 사이는 몇 프렛?", "o": ["1프렛", "2프렛", "3프렛"], "a": 0, "why": "E-F, B-C는 반음(1프렛)."}, {"q": "12프렛은?", "o": ["개방현의 옥타브", "개방현과 다른 음", "한 칸 낮은 음"], "a": 0, "why": "12프렛은 옥타브."}, {"q": "옥타브 모양은?", "o": ["두 줄 위 +2프렛", "한 줄 위 +2프렛", "같은 줄 +3프렛"], "a": 0, "why": "두 줄 위, 오른쪽 2칸."}])
+];
+
+startCourse(LESSONS,'bass2h-done');
+</script></body></html>

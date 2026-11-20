@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>매일 연습 15분</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>매일 연습 15분</h1><span class="pill">Practice · 매일</span></div>
+  <p class="muted">매일 15분: 음 찾기 3분 · 스케일 5분 · 번호 2분 · 곡 5분 · 오늘의 주법. 체크는 오늘 하루만 유효하고 내일은 새로 시작해요. 맨 위에 매일 하면 좋은 강의 모음이 있어요.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰의 <b>무음(벨) 스위치</b>를 끄고 재생 버튼을 한 번 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="../Practice/요약노트.html">요약노트</a> · <a href="../Practice/매일연습.html">매일 연습</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+
+const TODAY=new Date(),KEYI=TODAY.getDate()%12,WD=TODAY.getDay();
+const TECH=[
+ ['일','잼 자유 연습','r5o','pop','maj-1564',0,undefined,'오늘은 쉬는 날! 자유롭게 반주에 맞춰 놀아 보세요.'],
+ ['월','핑거링 교대','root8','rock','maj-1564',0,undefined,'검-중 교대를 깨끗하게.'],
+ ['화','피크 ↓↑','root8','rock','maj-1451',4,'pick','박은 ↓, 박 사이는 ↑.'],
+ ['수','고스트노트','funk','funk','min-1b7b6b7',9,undefined,'진짜 음은 크게, 고스트는 아주 약하게.'],
+ ['목','슬랩 (엄지·팝)','slap','funk','min-1b7b6b7',9,undefined,'엄지는 낮은 줄, 팝은 높은 줄.'],
+ ['금','해머온·슬라이드','hammer','rock','min-1b7b6b7',9,undefined,'기교는 양념처럼 조금만.'],
+ ['토','레게 쉼표 / 재즈 워킹','reggae','reggae','maj-1451',0,undefined,'쉬는 박도 연주예요.']];
+const T=TECH[WD];
+const LINKS=[['음 찾기','../Part1_기초/Chapter1_지판외우기.html',[['lb1','줄 전체 외우기'],['lb3','네 줄을 한꺼번에'],['l7','60초 넥 게임']]],
+ ['스케일·번호','../Part1_기초/Chapter2_음정지도_메이저스케일.html',[['mb1','번호판 블록 3층'],['m7','번호 게임']]],
+ ['스케일·블록','../Part2_스케일과코드/Chapter4_펜타토닉과블루스.html',[['pb1','펜타 박스 5개']]],
+ ['포지션·키','../Part2_스케일과코드/Chapter6_넥전체연결과포지션.html',[['nb1','포지션 블록 7개'],['n4','키 찾기 게임']]],
+ ['리듬','../Part3_리듬과주법/Chapter7_리듬과그루브기초.html',[['r7','리듬 놀이터']]],
+ ['주법','../Part3_리듬과주법/Chapter8_핑거링.html',[['f6','속도 올리기 훈련']]],
+ ['내 라인','../Part4_베이스라인/Chapter13_내첫베이스라인.html',[['m6','내 라인 만들기']]],
+ ['적용·편곡','../Part6_적용과편곡/Chapter25_라인수정과편곡.html',[['md2','수정 레시피 8가지']]],
+ ['어프로치','../Part6_적용과편곡/Chapter22_어프로치노트실전.html',[['ap6','어프로치 넣을 자리']]],
+ ['즉흥','../Part6_적용과편곡/Chapter24_즉흥설계도.html',[['im6','단계별 즉흥 실습']]],
+ ['곡 사례','../Part6_적용과편곡/Chapter26_대중음악속베이스분석.html',[['sg2','루트·코드톤 사례'],['sg3','리프·스케일 사례']]],
+ ['귀 훈련','../Part7_프로베이시스트/Chapter27_악보읽기와귀훈련.html',[['rd4','음정 귀 훈련']]],
+ ['잼','../Part5_즉흥과잼/Chapter20_잼세션실전.html',[['j6','졸업 실습실']]]];
+const LESSONS=[
+ L('d0',2,'오늘의 루틴 + 추천 강의 모음','매일 15분','오늘 할 5가지를 확인하고, 매일 하면 좋은 강의를 한곳에서 열기',
+  '운동 선수가 매일 스트레칭부터 하듯이 베이스도 매일 15분씩 같은 순서로 몸을 풀어요. 하루 15분이 일주일에 한 번 2시간보다 훨씬 효과가 좋아요.',
+  ['아래 5개 루틴을 순서대로 하고 체크하기 (체크는 오늘만 유효하고 내일 새로 시작해요)','오늘의 키는 '+NAMES[KEYI]+', 오늘의 주법은 "'+T[1]+'"','어려운 부분은 추천 강의 링크로 가서 다시 공부'],
+  ['순서가 중요해요: 귀로 음 찾기 → 스케일 → 번호 → 곡 → 주법. 눈·손·귀를 차례로 깨워요.','바쁜 날은 3분(음 찾기)+2분(번호)만 해도 체크하고 이어 가세요. 끊기지 않는 게 중요해요.'],
+  t=>{const box=el('div',{class:'row'});t.append(el('p',{class:'muted'},'아래 링크는 각 챕터의 해당 레슨으로 바로 이동해요 (새로 열려요).'));
+   LINKS.forEach(([g,href,ls])=>{const r=el('div',{class:'row'},'<b style="min-width:92px">'+g+'</b>');ls.forEach(([id,tx])=>r.append(el('a',{href:href+'#'+id,target:'_blank',rel:'noopener'},'▶ '+tx)));t.append(r);});}),
+ L('d1',3,'① 음 찾기 3분','네 줄 전체','4줄 전체에서 음 이름을 3분 동안 찾기',
+  '매일 아침 이름 부르기 시간이에요. 줄 번호와 프렛이 눈에 익어요.',['타이머 3분을 켜고 퀴즈 시작','틀린 음은 이름을 말하며 다시 치기','연속 10개 정답 목표'],['모르면 4번줄 → 5프렛 규칙 순서로 푸세요.'],
+  t=>findQuiz(t,{strings:[3,2,1,0],pool:NAMES,hint:n=>'표시점(3·5·7·12)에서 세어 보세요.'})),
+ L('d2',5,'② 스케일 모양 5분','오늘의 키 '+NAMES[KEYI],'오늘의 키에서 메이저·마이너·펜타를 메트로놈 속도로 치기',
+  '오늘 반장(루트)은 '+NAMES[KEYI]+'예요. 판(모양)을 반장 위에 올려 놓고 반주와 함께 걸어요.',['오늘의 키로 설정된 반주 틀기','스케일(메이저→마이너→펜타)을 바꿔 가며 오르내리기','4번줄·3번줄 루트 두 자리에서 모두 치기'],['BPM 60~80에서 정확히. 빨라지면 모양이 무너져요.'],
+  studio({key:KEYI,progs:['maj-1564','maj-1451','min-1b6b3b7','dor-vamp'],grooves:['pop','rock','ballad'],prog:'maj-1564',lines:['root4','r5','run','pentrun'],line:'run',bpm:70,hand:true,scales:[['메이저',MODES.maj],['마이너',MODES.min],['메이저 펜타',MODES.majpent],['마이너 펜타',MODES.minpent]]})),
+ L('d3',2,'③ 음정 번호 말하며 치기 2분','번호 게임','루트에서 번호(3·5·b7·8)를 3초 안에 찾기 60초 게임',
+  '번호판을 눈 감고도 읽는 훈련이에요.',['60초 시작을 누르고 최대한 많이 맞히기','틀린 음정을 기억해 두기','어제보다 점수 올리기'],['점수를 적어 두면 성장이 보여요.'],
+  t=>mapQuiz(t,{timed:true,pool:[3,4,5,7,9,10,11,12]})),
+ L('d4',5,'④ 곡 5분','좋아하는 곡 따라 치기','내 mp3 또는 합성 반주에서 곡 라인을 따라 치기',
+  '진짜 음악과 함께 치는 시간이에요. 오늘의 연습이 노래가 돼요.',['내 mp3 불러와 속도 70%로 따라 치기 (또는 아래 합성 반주)','어려운 4마디만 A-B 반복','마지막에 한 번 처음부터 끝까지'],['곡을 외운다고 생각하지 말고 루트만 먼저 따라가세요.'],
+  both(Mp3Player,studio({key:KEYI,progs:ALLP,grooves:ALLG,prog:'maj-1564',lines:['root4','r5','r5o','arp','walk'],line:'r5o',bpm:85,hand:true,builder:true}))),
+ L('d5',5,'⑤ 오늘의 주법: '+T[1],'요일별 주법 ('+T[0]+'요일)','요일마다 하나씩 주법을 돌아가며 연습',
+  T[7],['손 애니메이션과 TAB을 보며 따라 치기','느리게 → 점점 빠르게','녹음해서 들어 보기'],['월 핑거 · 화 피크 · 수 고스트 · 목 슬랩 · 금 해머온 · 토 레게/워킹 · 일 자유 — 일주일에 모든 주법을 한 번씩!'],
+  studio({key:T[5],progs:ALLP,grooves:ALLG,prog:T[4],groove:T[3],lines:Object.keys(LINES),line:T[2],bpm:75,hand:true,style:T[6],handStyle:T[6]}))
+];
+
+startCourse(LESSONS,'bass-daily-'+new Date().toISOString().slice(0,10));
+</script></body></html>

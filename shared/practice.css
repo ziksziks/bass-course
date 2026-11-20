@@ -1,0 +1,93 @@
+.sel{display:inline-flex;align-items:center;gap:6px;font-size:14px}
+.sel select{font:inherit;font-size:14px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:5px 8px}
+.tabwrap svg{min-width:760px}
+svg .tn{transition:stroke .1s}
+svg .dl.gh{fill:var(--warn)}
+.handwrap{max-width:460px}
+@keyframes hitpop{0%{transform:scale(.4)}60%{transform:scale(1.35)}100%{transform:scale(1)}}
+svg circle.hit{animation:hitpop .25s ease-out;transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:reduce){svg circle.hit{animation:none}}
+.gridrows,.beatgrid{display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.grow,.brow{display:flex;gap:3px;align-items:center;min-width:620px}
+.gl{width:78px;font-size:13px;color:var(--muted);flex:none}
+.gc,.bc{width:28px;height:28px;padding:0;border-radius:6px;flex:none;border:1px solid var(--line);background:var(--surface)}
+.gc.beat,.bc.beat{margin-left:6px;border-color:var(--board-line)}
+.gc.on,.bc.on{background:var(--accent);border-color:var(--accent)}
+.bc.on.cur{background:var(--warn);border-color:var(--warn)}
+.bc.cur:not(.on){background:var(--warn-soft)}
+.bc.ro{cursor:default}
+.bn{width:28px;flex:none;text-align:center;font-size:12px;color:var(--muted)}
+.bn:nth-child(4n+2){margin-left:6px}
+.lessonlink{font-size:14px}
+
+details.theory{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:10px;padding:10px 16px}
+details.theory summary{cursor:pointer;font-weight:700;color:var(--accent-ink)}
+details.theory p{margin:8px 0;max-width:72ch}
+details.theory ul,details.theory ol{margin:6px 0;padding-left:22px}
+details.theory table{border-collapse:collapse;margin:8px 0;font-size:14px}
+details.theory td,details.theory th{border:1px solid var(--line);padding:4px 10px;text-align:center;background:var(--surface)}
+details.theory .big{font-size:17px;font-weight:600}
+details.theory code{background:var(--surface);padding:1px 6px;border-radius:5px}
+
+details.faq{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:10px;padding:10px 16px}
+details.faq summary{cursor:pointer;font-weight:700}
+details.faq .qa{margin:10px 0}
+details.faq .qa p{margin:4px 0 0;max-width:72ch}
+
+details.song{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 14px}
+details.song summary{cursor:pointer}
+.songbody{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.songbody ul{margin:2px 0;padding-left:20px}
+table.tt{border-collapse:collapse;font-size:14px}table.tt td,table.tt th{border:1px solid var(--line);padding:4px 10px}
+.modlab{background:var(--warn-soft)}
+.eqbars{display:flex;flex-direction:column;gap:4px}
+
+/* ===== 모바일·태블릿(아이폰·아이패드) 대응 ===== */
+html{-webkit-text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
+button,select,input,summary,a,label{touch-action:manipulation}
+.mobilehint{display:none;font-size:13px}
+.boardwrap,.tabwrap,.grow,.beatgrid,.gridrows{-webkit-overflow-scrolling:touch}
+@media (pointer:coarse){
+  button{min-height:44px;padding:8px 14px}
+  select{min-height:44px;font-size:16px}
+  input[type=checkbox]{width:22px;height:22px}
+  input[type=range]{height:34px}
+  .gc,.bc{min-width:30px;height:34px}
+  label.done{font-size:16px}
+}
+@media (max-width:900px){
+  .tl a{font-size:11px}
+}
+@media (max-width:640px){
+  main{padding:12px 8px 48px !important;gap:14px !important}
+  h1{font-size:25px !important}
+  h2{font-size:19px !important}
+  .card{padding:14px 12px}
+  select,input[type=text],textarea{font-size:16px}
+  .mobilehint{display:block}
+  .boardwrap svg{min-width:540px}
+  .tabwrap svg{min-width:660px}
+  .names{grid-template-columns:repeat(4,minmax(0,1fr)) !important}
+  .grow,.brow{min-width:560px}
+  .head{flex-direction:column;align-items:flex-start}
+  .sel{flex-wrap:wrap}
+  input[type=range]{width:min(230px,58vw)}
+  .keygrid{grid-template-columns:repeat(4,minmax(0,1fr)) !important}
+  .sticky{position:static !important}
+  .tool{padding:10px}
+  .ls{flex-wrap:wrap}
+  details.theory,details.faq{padding:8px 10px}
+  pre.code{font-size:12px}
+}
+@media (min-width:641px) and (max-width:1100px){
+  main{max-width:900px}
+}
+/* flex 자식이 내용 때문에 화면보다 넓어지는 문제 방지 (모바일 가로 넘침) */
+main>*{min-width:0;max-width:100%}
+.card,.tool,.boardwrap,.tabwrap,.chiprow,.handwrap{min-width:0;max-width:100%}
+.boardwrap,.tabwrap{overflow-x:auto}
+body{overflow-x:hidden}
+select{max-width:100%}
+.sel{max-width:100%}
+.sel select{min-width:0;text-overflow:ellipsis}

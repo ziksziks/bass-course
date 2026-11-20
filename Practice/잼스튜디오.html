@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563c9">
+<title>잼 스튜디오</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>잼 스튜디오</h1><span class="pill">Practice · 실습실</span></div>
+  <p class="muted">C 메이저든 블루스든, 반주를 틀고 TAB·지판·손 애니메이션을 보며 연습하세요. 어떤 챕터에서도 이 페이지로 와서 더 연습할 수 있어요.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 <b>무음(벨) 스위치</b>를 끄고 재생을 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+const LESSONS=[
+ L('x1',30,'잼 스튜디오','반주 + TAB + 지판','키·코드 진행·리듬·베이스 라인을 고르고 TAB과 지판 애니메이션을 따라 연주하기',
+  '드럼과 코드 반주 위에서 "움직이는 악보(TAB)"를 따라가요. 지금 칠 음이 지판에서 반짝여요.',
+  ['키와 코드 진행 고르기','TAB의 빨간 선을 따라 연주','베이스 소리 끄고 내가 치기','빠르기 조절'],
+  ['연습은 "느리게 → 정확히 → 빠르게" 순서예요. BPM 60부터 시작하세요.','하루 15분씩 규칙적으로!'],
+  studio({progs:ALLP,grooves:ALLG,prog:'maj-1564',lines:Object.keys(LINES),line:'r5o',bpm:85,hand:true,builder:true,scales:[['메이저',MODES.maj],['마이너',MODES.min],['메이저 펜타',MODES.majpent],['마이너 펜타',MODES.minpent],['블루스',MODES.blues],['도리안',MODES.dor],['믹솔리디안',MODES.mix]]})),
+ L('x2',20,'내 mp3 따라 치기','속도 줄이고 구간 반복','좋아하는 곡을 느리게 틀고 구간을 반복하며 베이스 라인 따라가기',
+  '곡을 느리게 틀어서 현미경으로 보듯 베이스를 들어요.',['mp3 불러오기','속도 70%','어려운 구간 A-B 반복'],
+  ['저작권이 있는 mp3는 개인 연습용으로만 쓰세요.'],Mp3Player)
+];
+startCourse(LESSONS,'bass-practice-jam');
+</script></body></html>

@@ -1,0 +1,152 @@
+const MAJ_D=[0,2,4,5,7,9,11,12];
+const LESSONS=[
+ {id:'a1',min:10,t:'맑은 날 vs 흐린 날',s:'소리 비교',
+  tips:['마이너는 "슬프다"기보다 "차분하고 진지하다"예요. 록·발라드·펑크에 정말 많이 나와요.','눈 감고 들어 보세요. 소리 먼저, 이름은 나중!'],
+  goal:'같은 루트에서 메이저와 마이너 소리 차이를 귀로 구분하기',
+  an:'메이저는 햇빛 쨍쨍한 날, 마이너는 구름 낀 날이에요. 반장(루트)은 같고 날씨만 달라요.',
+  todo:['메이저 소리와 마이너 소리를 번갈아 듣기','루트를 바꿔도 날씨 느낌이 같은지 확인','어느 음이 달라졌는지 번호판에서 찾기 (노란 점)'],
+  build:t=>{const aw=el('div',{class:'boardwrap'});const b=Board(aw,{frets:NF});let kind='maj';
+    const draw=st=>{const D=kind==='maj'?MAJ_D:MIN;drawMap(b,st.rs,st.rf,{pick:p=>D.includes(p.d),showDim:true,alt:kind==='min'?[3,8,10]:[]});};
+    const st=rootPicker(t,draw,[2,3]);
+    const r=el('div',{class:'row'});
+    const bm=btn('☀ 메이저',()=>{kind='maj';bm.classList.add('on');bn.classList.remove('on');draw(st);playScale(pitch(st.rs,st.rf),MAJ_D);},'on');
+    const bn=btn('☁ 마이너',()=>{kind='min';bn.classList.add('on');bm.classList.remove('on');draw(st);playScale(pitch(st.rs,st.rf),MIN);});
+    r.append(bm,bn);t.append(r,aw,el('p',{class:'muted'},'노란 점이 마이너에서 한 칸씩 내려간 음이에요 (b3, b6, b7).'));draw(st);}},
+ {id:'a2',min:20,t:'3·6·7 내리기',s:'맑은 날 → 흐린 날',
+  tips:['순서로 외우세요: 3 → 6 → 7. "삼육칠, 내려!"','3이 마이너/메이저를 결정하는 핵심이에요. 나머지는 따라와요.'],
+  goal:'메이저에서 3, 6, 7 세 음만 한 칸 내려 마이너 만들기',
+  an:'친구 8명 중 3번, 6번, 7번 친구가 구름 낀 날엔 계단을 한 칸 내려가요. 나머지 다섯 명은 그대로예요.',
+  todo:['"한 단계씩 내리기" 애니메이션 보기','내려간 음(b3 b6 b7)을 실제로 쳐서 차이 느끼기','Python 코드로 같은 결과 확인'],
+  code:`MAJOR = [0, 2, 4, 5, 7, 9, 11]   # 메이저 간격(반음)
+minor = MAJOR.copy()
+for n in (3, 6, 7):             # 3번, 6번, 7번 음을
+    minor[n - 1] -= 1           # 한 칸 내린다
+print(minor)  # [0, 2, 3, 5, 7, 8, 10]`,
+  build:t=>{const aw=el('div',{class:'boardwrap'});const b=Board(aw,{frets:NF});let ids=[],step=0;
+    const sets=[[0,2,4,5,7,9,11,12],[0,2,3,5,7,9,11,12],[0,2,3,5,7,8,11,12],[0,2,3,5,7,8,10,12]];
+    const msg=['① 메이저 (맑은 날)','② 3 → b3','③ 6 → b6','④ 7 → b7 = 마이너 (흐린 날)'];const info=el('div',{class:'prompt'});
+    const draw=st=>{const D=sets[step];drawMap(b,st.rs,st.rf,{pick:p=>D.includes(p.d),showDim:true,alt:[3,8,10].filter(x=>D.includes(x))});info.textContent=msg[step];playScale(pitch(st.rs,st.rf),D,.28);};
+    const st=rootPicker(t,()=>draw(st),[2,3]);
+    const stop=()=>{ids.forEach(clearTimeout);ids=[];};
+    const r=el('div',{class:'row'});
+    r.append(btn('자동 재생',()=>{stop();[0,1,2,3].forEach(i=>ids.push(setTimeout(()=>{step=i;draw(st);},i*3200)));},'primary'),
+      btn('◀ 이전',()=>{stop();step=Math.max(0,step-1);draw(st);}),btn('다음 ▶',()=>{stop();step=Math.min(3,step+1);draw(st);}));
+    t.append(r,info,aw,el('p',{class:'muted'},'점선 = 카드에 가려진 번호, 노란색 = 방금 내려간 음.'));step=0;drawMap(b,st.rs,st.rf,{pick:p=>sets[0].includes(p.d),showDim:true});info.textContent=msg[0];}},
+ {id:'a3',min:20,t:'이동형 마이너 모양',s:'루트 검지',
+  tips:['메이저 모양은 "루트=중지", 마이너 모양은 "루트=검지"! 한 칸 차이로 헷갈리기 쉬우니 손가락 번호 보며 연습하세요.','마이너 모양은 새끼손가락을 많이 써요. 처음엔 손이 당겨도 정상이에요.'],
+  goal:'루트 검지 기준 마이너 손 모양으로 8개 음 올라가고 내려오기',
+  an:'같은 책가방인데 이번엔 가방끈을 검지에 걸어요. 루트가 검지, 새끼는 루트에서 세 칸 오른쪽까지 가요.',
+  todo:['손가락 번호를 보며 천천히 올라가기','루트 줄·프렛을 바꿔 모양 옮기기','메트로놈 60: 올라갈 때 1 2 b3 4 5 b6 b7 8 소리 내어 말하기'],
+  code:`# 마이너 모양: (몇 줄 위, 루트 대비 프렛)
+MINOR_SHAPE = [(0,0),(0,2),(0,3),(1,0),(1,2),(1,3),(2,0),(2,2)]
+def where(root_fret):
+    return [(k, root_fret + d) for k, d in MINOR_SHAPE]
+print(where(5))  # 4번줄 5프렛(A) 출발 = A 마이너`,
+  build:t=>{const aw=el('div',{class:'boardwrap'});const b=Board(aw,{frets:NF});let ids=[],mode='finger';
+    const stop=()=>{ids.forEach(clearTimeout);ids=[];};
+    const opt=st=>({pick:inMinShape,mode,fingFn:minFing,alt:[3,8,10]});
+    const draw=st=>{stop();drawMap(b,st.rs,st.rf,opt(st));};
+    const st=rootPicker(t,draw,[3,5]);
+    modeBar(t,m=>{mode=m;draw(st);},[['finger','손가락 번호'],['num','음정 번호'],['name','음 이름']]);
+    const lab=(p,st)=>mode==='name'?noteAt(p.si,p.f):mode==='finger'?minFing(p.f-st.rf):INT[p.d];
+    const run=(D)=>{stop();b.clear();const ps=positions(st.rs,st.rf).filter(inMinShape),base=pitch(st.rs,st.rf);
+      D.forEach((d,i)=>ids.push(setTimeout(()=>{const p=ps.find(q=>q.d===d);b.dot(p.si,p.f,lab(p,st),d===0||d===12?'root':[3,8,10].includes(d)?'warn':'note');playPitch(base+d,0,.5);},i*600)));};
+    const r=el('div',{class:'row'});
+    r.append(btn('올라가며 소리',()=>run(MIN),'primary'),btn('내려오며 소리',()=>run(MIN.slice().reverse())),btn('모양 전체 보기',()=>draw(st)));
+    t.append(r,aw,el('p',{class:'muted'},'노란 점이 마이너의 특징 음(b3 b6 b7)이에요. 기본은 4번줄 5프렛 = A 마이너.'));draw(st);}},
+ {id:'a4',min:20,t:'나란한조',s:'C 메이저 = A 마이너',
+  tips:['메이저의 6번 음이 곧 나란한조 마이너의 루트예요. C 메이저의 6번 = A. 그래서 C 메이저와 A 마이너는 같은 음!','곡이 Am으로 시작하면 C 메이저 음을 다 써도 돼요. 키를 두 번 외울 필요가 없어요.'],
+  goal:'C 메이저와 A 마이너가 같은 7개 음이고 반장만 다르다는 것 이해하기',
+  an:'같은 친구 7명이 모인 반인데, 반장을 C로 뽑으면 맑은 반(C 메이저), A로 뽑으면 흐린 반(A 마이너)이에요. 친구들은 그대로, 반장만 바뀌어요.',
+  todo:['반장을 C ↔ A로 바꾸며 점 색 변화 보기','같은 음이 지판에 그대로인 것 확인','두 스케일을 소리로 들으며 "반장 느낌" 차이 느끼기'],
+  code:`NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+def scale(root, steps):
+    pos, out = NOTES.index(root), [root]
+    for s in steps:
+        pos += s; out.append(NOTES[pos % 12])
+    return sorted(set(out))
+print(scale('C', [2,2,1,2,2,2,1]))
+print(scale('A', [2,1,2,2,1,2,2]))   # 두 결과가 똑같다!`,
+  build:t=>{const aw=el('div',{class:'boardwrap'});const b=Board(aw);let boss='C';
+    const pcs=[0,2,4,5,7,9,11];const info=el('div',{class:'prompt'});
+    const draw=()=>{b.clear();for(let si=0;si<4;si++)for(let f=0;f<=12;f++){const n=noteAt(si,f),pc=NAMES.indexOf(n);if(pcs.includes(pc))b.dot(si,f,n,n===boss?'root':'note');}
+      info.textContent='반장 = '+boss+(boss==='C'?'  → C 메이저 (맑은 날)':'  → A 마이너 (흐린 날)')+' · 음은 C D E F G A B 똑같아요';};
+    const r=el('div',{class:'row'});
+    r.append(btn('반장 = C',()=>{boss='C';draw();playScale(pitch(2,3),MAJ_D);},'primary'),btn('반장 = A',()=>{boss='A';draw();playScale(pitch(3,5),MIN);}),
+      btn('반장 바꾸기 애니메이션',()=>{boss='C';draw();setTimeout(()=>{boss='A';draw();},1800);setTimeout(()=>{boss='C';draw();},3600);}));
+    t.append(r,info,aw,el('p',{class:'muted'},'진한 점이 반장(루트)이에요. 파란 점들의 위치는 하나도 안 바뀌어요!'));draw();}},
+ L('ab1',15,'마이너를 블록으로','층별로 읽기','마이너 스케일을 같은 줄·한 줄 위·두 줄 위 블록으로 묶어 메이저와 비교하며 외우기',
+  '메이저 집과 마이너 집은 층 구조가 같아요. 달라진 건 3·6·7 세 칸뿐이에요. 1층은 R 2 b3, 2층은 4 5 b6, 3층은 b7 8. 층을 비교하면 어디가 바뀌었는지 눈에 확 보여요.',
+  ['마이너 블록을 하나씩 켜서 읽기','메이저 블록과 번갈아 보며 바뀐 칸 찾기','가리고 떠올리기와 빈칸 퀴즈'],
+  ['마이너 3층은 두 칸뿐이에요(b7, 8). 가장 외우기 쉬운 층부터 시작하세요.','메이저와 마이너를 번갈아 켜 보면 "3·6·7이 한 칸 아래"가 눈으로 보여요.'],
+  both(memo({mode:'num',blocks:mapBlocks(3,5,MIN,['1층: 같은 줄 (R 2 b3)','2층: 한 줄 위 (4 5 b6)','3층: 두 줄 위 (b7 8)'])}),memo({mode:'num',blocks:mapBlocks(2,3,MODES.maj,['메이저 1층 (R 2 3)','메이저 2층 (3 4 5 6)','메이저 3층 (6 7 8)'])}))),
+ {id:'a5',min:5,t:'쉬는 시간',s:'손 풀기',rest:true,
+  tips:['쉬는 동안 "삼육칠 내려!"를 소리 내어 말해 보세요. 귀에 남아요.'],
+  goal:'손가락과 머리 쉬기',an:'구름 낀 날도 쉬어 가요.',todo:['손가락 쥐었다 펴기 10번','물 마시기','머릿속으로 마이너 번호 말하기: 1 2 b3 4 5 b6 b7 8'],build:t=>{}},
+ {id:'a6',min:15,t:'12개 마이너 키',s:'판 밀기 다시',
+  tips:['Am, Em, Dm, Bm은 곡에 가장 자주 나와요. 이 4개부터!','마이너 키 루트를 빨리 찾으려면 "나란한조 메이저 루트의 6번"을 떠올려도 돼요.'],
+  goal:'아무 마이너 키에서 루트를 찾고 같은 모양으로 스케일 치기',
+  an:'번호판은 그대로, 반장 자리만 옮겨요. 이번엔 구름 카드를 씌운 채로요.',
+  todo:['한 칸씩 밀기로 12키 살펴보기','4번줄 루트 / 3번줄 루트 두 자리로 쳐 보기','Am, Em, Dm 세 키를 내 손으로 치기'],
+  code:`NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+MINOR = [0, 2, 3, 5, 7, 8, 10]
+def minor_scale(key):
+    r = NOTES.index(key)
+    return [NOTES[(r + d) % 12] for d in MINOR]
+print(minor_scale('E'))  # ['E','F#','G','A','B','C','D']`,
+  build:t=>{const aw=el('div',{class:'boardwrap'});const b=Board(aw,{frets:NF});let key=9,rs=3,mode='num',iv=null;
+    const info=el('div',{class:'prompt'}),kb=el('div',{class:'names'});
+    const rf=()=>{let f=(key-STR[rs].o+12)%12;if(f<1)f+=12;return f;};
+    function draw(){const f=rf();drawMap(b,rs,f,{pick:p=>MIN.includes(p.d),showDim:true,mode,alt:[3,8,10]});
+      info.textContent=NAMES[key]+' 마이너 — 루트 '+STR[rs].num+'번줄 '+f+'프렛 · '+MIN.slice(0,7).map(d=>NAMES[(key+d)%12]).join(' ');kbs.forEach((x,i)=>x.classList.toggle('on',i===key));}
+    const kbs=NAMES.map((n,i)=>{const x=btn((SHOW[n]||n)+'m',()=>{stopS();key=i;draw();playScale(pitch(rs,rf()),MIN);});kb.append(x);return x;});
+    function stopS(){if(iv){clearInterval(iv);iv=null;}}
+    const sb=[3,2].map(si=>btn(STR[si].num+'번줄 루트',()=>{rs=si;sb.forEach((x,i)=>x.classList.toggle('on',[3,2][i]===rs));draw();}));sb[0].classList.add('on');
+    const r=el('div',{class:'row'});r.append(...sb,btn('한 칸씩 밀기',()=>{stopS();key=0;draw();iv=setInterval(()=>{key++;if(key>=12){stopS();key=11;}draw();playPitch(pitch(rs,rf()),0,.5);},1100);},'primary'));
+    t.append(kb,r);modeBar(t,m=>{mode=m;draw();},NUMNAME);t.append(info,aw);draw();}},
+ {id:'a7',min:20,t:'귀로 맞히기 게임',s:'메이저? 마이너?',
+  tips:['소리가 "맑고 밝다" → 메이저, "어둡고 무겁다" → 마이너. 3번째 음만 들어도 구분돼요.','틀려도 좋아요. 귀는 반복할수록 빨라져요.'],
+  goal:'소리만 듣고 메이저/마이너 구분하고, 마이너 키의 n번 음 이름 말하기',
+  an:'날씨 맞히기 게임이에요. 소리가 쨍하면 맑음, 뭉근하면 흐림!',
+  todo:['귀 퀴즈 10개 중 8개 맞히기','음 이름 퀴즈 맞힘 15개','틀린 건 번호판에서 다시 확인'],
+  code:`degree = {1:0, 2:2, 3:3, 4:5, 5:7, 6:8, 7:10}   # 마이너
+def minor_note(key, n):
+    return NOTES[(NOTES.index(key) + degree[n]) % 12]
+print(minor_note('A', 3))  # C`,
+  build:t=>{const a=el('div',{class:'tool'}),c=el('div',{class:'tool'});
+    const pr=el('div',{class:'prompt'},'소리를 듣고 골라 보세요'),fbk=el('div',{class:'fb'}),sc=el('div',{class:'score muted'});let cur=null,score=0,tries=0;
+    const r=el('div',{class:'row'});
+    const next=()=>{cur=Math.random()<.5?'maj':'min';const rs=rnd([3,2]),rf=1+Math.floor(Math.random()*8);cur={k:cur,p:pitch(rs,rf)};playScale(cur.p,cur.k==='maj'?MAJ_D:MIN,.35);fbk.textContent='';};
+    const ans=k=>{if(!cur)return;tries++;const ok=cur.k===k;if(ok)score++;chime(ok);fbk.className='fb '+(ok?'ok':'no');fbk.textContent=ok?'정답!':'아쉬워요. 정답은 '+(cur.k==='maj'?'메이저':'마이너')+'예요.';sc.textContent='맞힘 '+score+' / 시도 '+tries;setTimeout(next,1300);};
+    r.append(btn('시작 / 다시 듣기',()=>{if(!cur)next();else playScale(cur.p,cur.k==='maj'?MAJ_D:MIN,.35);},'primary'),btn('☀ 메이저',()=>ans('maj')),btn('☁ 마이너',()=>ans('min')));
+    a.append(el('h3',{style:'margin:0;font-size:17px'},'A. 귀 퀴즈'),r,pr,fbk,sc);
+    c.append(el('h3',{style:'margin:0;font-size:17px'},'B. 마이너 키 n번 음 이름'));degreeQuiz(c,MIN,'마이너');t.append(a,c);}},
+ {id:'a8',min:10,t:'마이너 키 안의 코드',s:'Am Bdim C Dm Em F G',
+  tips:['Am 키의 코드는 C 키 코드와 똑같아요(나란한조). 1번만 Am이 되는 거예요.','마이너 곡 대표 진행: 1-b6-b3-b7 (Am-F-C-G), 1-4-5 (Am-Dm-Em).'],
+  goal:'마이너 키의 7개 코드를 번호로 말하고, 진행의 루트 치기',
+  an:'마이너 반에도 코드 7개가 있어요. 메이저 반이랑 이름 순서만 달라요. 번호를 알면 키가 바뀌어도 걱정 없어요.',
+  todo:['키를 고르고 7개 코드 확인','Am-F-C-G 루트를 4번줄로 쳐 보기','Chapter 4 예고: 펜타토닉으로 5개 음만 쓰기'],
+  code:`QUAL = ['m', 'dim', '', 'm', 'm', '', '']
+scale = minor_scale('A')
+print([n + q for n, q in zip(scale, QUAL)])
+# ['Am','Bdim','C','Dm','Em','F','G']`,
+  build:t=>{const aw=el('div',{class:'boardwrap'});const b=Board(aw,{frets:NF});let key=9,ids=[];
+    const QUAL=['m','dim','','m','m','',''];const kb=el('div',{class:'names'});
+    const chord=(k,i)=>NAMES[(k+MIN[i])%12]+QUAL[i];const tbl=el('table',{class:'ch'}),info=el('div',{class:'prompt'});
+    const rootF=pc=>(pc-4+12)%12;
+    function showRoot(i,snd){b.clear();const pc=(key+MIN[i])%12;[3,2].forEach(si=>{for(let f=0;f<=NF;f++)if(noteAt(si,f)===NAMES[pc])b.dot(si,f,NAMES[pc],si===3?'root':'note');});if(snd)playPitch(pitch(3,rootF(pc)),0,.6);}
+    function render(){tbl.innerHTML='';const h=el('tr'),r1=el('tr'),r2=el('tr');const nm=['1','2','b3','4','5','b6','b7'];
+      for(let i=0;i<7;i++){h.append(el('th',{},nm[i]));const td=el('td');td.append(btn(chord(key,i),()=>showRoot(i,true)));r1.append(td);r2.append(el('td',{class:'muted'},QUAL[i]==='m'?'마이너':QUAL[i]==='dim'?'감소':'메이저'));}
+      tbl.append(h,r1,r2);kbs.forEach((x,i)=>x.classList.toggle('on',i===key));info.textContent=NAMES[key]+' 마이너 키: '+Array.from({length:7},(_,i)=>chord(key,i)).join(' · ');}
+    const kbs=NAMES.map((n,i)=>{const x=btn((SHOW[n]||n)+'m',()=>{key=i;render();b.clear();});kb.append(x);return x;});
+    const stop=()=>{ids.forEach(clearTimeout);ids=[];};const prog=el('div',{class:'row'},'<span class="muted">진행 듣기</span>');
+    [[1,6,3,7],[1,4,5,1],[1,7,6,7]].forEach(p=>prog.append(btn(p.join('-'),()=>{stop();p.forEach((n,i)=>ids.push(setTimeout(()=>{const pc=(key+MIN[n-1])%12;b.clear();b.dot(3,rootF(pc),NAMES[pc],'root');playPitch(pitch(3,rootF(pc)),0,.9);info.textContent=p.join('-')+' → '+p.map(x=>chord(key,x-1)).join(' – ')+' (지금: '+chord(key,n-1)+')';},i*1100)));})));
+    t.append(kb,info,tbl,prog,aw);render();}},
+ L('a9',20,'실습실: A 마이너 잼','Am 키로 놀기','마이너 진행(Am F C G) 위에서 마이너 스케일과 라인 따라 치기',
+  '구름 낀 날의 놀이터예요. 지도는 C 메이저와 같고 반장만 A예요.',
+  ['반주 재생: A 마이너 진행','TAB 따라 치기','마이너 스케일 점만 골라 즉흥','메이저 진행과 번갈아 해 보며 분위기 비교'],
+  ['마이너 진행의 시작과 끝은 A. 집 소리를 기억하세요.'],
+  studio({progs:['min-1b6b3b7','min-1b7b6b7','min-145'],grooves:['rock','pop','ballad'],prog:'min-1b6b3b7',key:9,lines:['root4','r5','r5o','arp','run','cross'],line:'r5',bpm:80,hand:true,builder:true,scales:[['마이너 7음',MODES.min],['마이너 펜타',MODES.minpent]]}))
+
+ ,FINAL('z3',{key:9,prog:'min-1b6b3b7',groove:'rock',bpm:80,lines:["r5", "run"],line:'r5',guide:GSTEPS('r5','run',"A 마이너 진행에서 어떤 음이 b3·b6·b7인지 노란 점으로 확인해요.","TAB을 따라 같이 치며 마이너 스케일 소리를 귀에 담아요.","베이스 소리가 꺼져요. 혼자 쳐요.","마이너 스케일 오르내리기로 3·6·7 내려간 소리를 느껴요.")},[{"q": "마이너는 메이저에서 어떤 음을 내려요?", "o": ["3·6·7", "2·5·7", "1·4·5"], "a": 0, "why": "3·6·7을 반음씩."}, {"q": "C 메이저의 나란한조 마이너는?", "o": ["Am", "Dm", "Gm"], "a": 0, "why": "6번 음 A."}, {"q": "마이너 손 모양에서 루트는 어느 손가락?", "o": ["검지", "중지", "새끼"], "a": 0, "why": "마이너는 루트 검지."}, {"q": "마이너 1번 코드 성질은?", "o": ["마이너", "메이저", "감소"], "a": 0, "why": "i 코드는 마이너."}])
+];

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>Chapter 23. 스케일 적용 실전</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>Chapter 23. 스케일 적용 실전</h1><span class="pill">Part 6 · 적용과 편곡</span></div>
+  <p class="muted">코드에 맞는 스케일을 고르고, 강박엔 코드톤·약박엔 스케일 음을 두는 규칙으로 즉흥 라인을 만들어요.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰의 <b>무음(벨) 스위치</b>를 끄고 재생 버튼을 한 번 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="../Practice/요약노트.html">요약노트</a> · <a href="../Practice/매일연습.html">매일 연습</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+const PS=['maj-1564','maj-1451','maj-1645','maj-251','min-1b6b3b7','min-1b7b6b7','blues12','dor-vamp','mix-vamp','oyecomova','dorian2'];
+const SC=[['메이저',MODES.maj],['마이너',MODES.min],['메이저 펜타',MODES.majpent],['마이너 펜타',MODES.minpent],['블루스',MODES.blues],['도리안',MODES.dor],['믹솔리디안',MODES.mix],['로크리안',MODES.loc]];
+const THEORY={
+sc1:`<p>코드를 보고 "어떤 스케일을 쓸까?"를 정하는 가장 쉬운 방법은 <b>코드 성질 → 스케일 표</b>예요.</p>
+<table><tr><th>코드 성질</th><th>쓰기 좋은 스케일</th><th>이유</th></tr><tr><td>메이저(C)</td><td>메이저, 메이저 펜타</td><td>3도가 장3도</td></tr><tr><td>마이너(Am)</td><td>내추럴 마이너, 마이너 펜타</td><td>b3, b7</td></tr><tr><td>마이너7 한 코드 반복</td><td>도리안</td><td>마이너 + 밝은 6</td></tr><tr><td>도미넌트7(G7)</td><td>믹솔리디안, 블루스</td><td>b7</td></tr><tr><td>메이저7(Cmaj7)</td><td>메이저(리디안)</td><td>7이 있음</td></tr><tr><td>m7b5(Bm7b5)</td><td>로크리안</td><td>b5가 있음</td></tr></table>
+<p>더 쉬운 방법은 <b>키 하나로 통일</b>하는 거예요. 곡이 C 메이저 키면 C 메이저 스케일 7음을 모든 코드에서 써도 대부분 어울려요(다이어토닉). 그 대신 <b>마디 첫 박은 그 코드의 코드톤</b>을 지켜요.</p>`,
+sc2:`<p>스케일 음을 즉흥에 쓰는 가장 중요한 규칙: <b>강박에는 코드톤, 약박에는 스케일 음</b>. 박(1 2 3 4)은 몸이 "여기가 중심"이라고 느끼는 자리라서 코드와 맞는 음(코드톤)이 와야 안정적이고, 박 사이(&)는 지나가는 자리라서 스케일 음(2·4·6)이 와도 어색하지 않아요.</p>
+<p>이 규칙 하나로 스케일 음이 "틀린 음"이 될 일이 거의 없어져요. 한 마디를 8분음표 8개로 보면 <b>1(R) 2 3 4 5 6 8 5</b> 처럼 박 위는 코드톤(R, 3, 5, 8), 박 사이는 스케일 음(2, 4, 6)이 돼요.</p>`,
+sc3:`<p><b>스케일 런(run)</b>은 스케일 음을 순서대로 올라가거나 내려오는 라인이에요. 쓰는 곳: ① 코드가 오래 유지될 때의 변화, ② 필인(섹션 끝), ③ 솔로의 시작·끝. 규칙: <b>도착 음은 코드톤(보통 루트/옥타브)</b>에 하고, 방향을 한 번 바꾸면(올라갔다 내려오면) 더 음악적이에요.</p>
+<p>스케일 런은 한 줄이 아니라 <b>세 줄을 지나가요</b>. 줄을 건널 때 5프렛 규칙으로 이어 가면 끊김이 없어요. 속도는 느리게 시작해서 점점 빠르게. 빠른 런은 "많이 치는 것"이 아니라 "정확히 도착하는 것"이 목적이에요.</p>`,
+sc4:`<p><b>펜타토닉과 블루스</b>는 대부분의 코드 위에서 안전해요. 핵심 규칙: <b>마이너 곡엔 마이너 펜타, 메이저 곡엔 메이저 펜타, 7th(블루스) 곡엔 마이너 펜타(+b5) 또는 블루스 스케일</b>. 블루스에서는 I7 위에서 메이저와 마이너 펜타를 섞어 쓰기도 해요.</p>
+<p>코드가 바뀔 때는 두 가지 방법이 있어요. ① <b>키 기준</b>: 곡 전체 키의 펜타 하나로 계속. ② <b>코드 기준</b>: 코드마다 그 코드 루트의 펜타로 이동. 처음엔 키 기준이 쉽고, 익숙해지면 코드 기준으로 색을 더해요.</p>`,
+sc6:`<p><b>모드 적용</b>은 "한 코드가 오래 지속될 때" 가장 빛나요. <b>도리안</b>(마이너 + 밝은 6): Am7 한 코드나 Am7–D7 바이브. <b>믹솔리디안</b>(메이저 + b7): G7이나 I–bVII–IV. 모드의 색을 내려면 <b>그 모드의 특징 음</b>(도리안의 6, 믹솔리디안의 b7)을 강조하세요.</p>
+<table><tr><th>모드</th><th>특징 음</th><th>어울리는 곳</th></tr><tr><td>도리안</td><td>6 (마이너 안의 밝은 6)</td><td>소울·펑크·라틴·재즈 한 코드</td></tr><tr><td>믹솔리디안</td><td>b7 (메이저 안의 어두운 7)</td><td>블루스·록·펑크</td></tr></table>`,
+sc7:`<p>스케일 선택의 순서도: <b>① 곡의 키와 모드(메이저/마이너)를 확인 → ② 코드 성질을 확인 → ③ 한 코드가 오래 가면 모드를 쓰고, 빨리 바뀌면 키 하나로 통일 → ④ 모르면 펜타 → ⑤ 마디 첫 박은 항상 코드톤</b>. 이 다섯 단계를 소리 내어 읽으며 곡에 적용하세요.</p>`
+};
+const FAQ={
+sc1:[["스케일이 너무 많아서 헷갈려요.","메이저, 마이너, 두 펜타, 블루스 다섯 가지면 대부분의 곡을 덮어요. 도리안·믹솔리디안은 '한 음 바꾸기'로 알고 있으면 돼요."]],
+sc2:[["강박에 코드톤이 아니면 틀린 건가요?","틀린 건 아니에요. 다만 불안하게 들릴 수 있어요. 일부러 긴장을 만들 때 쓰는 고급 기법이에요."]],
+sc3:[["스케일 런을 빨리 치고 싶어요.","빠른 런은 정확도가 먼저예요. 60BPM에서 5번 연속 맞으면 5씩 올리세요."]],
+sc4:[["코드마다 펜타를 바꿔야 하나요?","처음엔 안 바꿔도 돼요. 마디 첫 음만 코드 루트로 지키면 키 하나로도 충분히 어울려요."]],
+sc6:[["도리안과 마이너 소리 차이를 못 느끼겠어요.","6번 음(한 칸 높은 음)을 반복해서 강조해 보세요. 도리안 한 코드 위에서 6을 자주 치면 색이 확 달라져요."]],
+sc7:[["곡 키를 모르면 어떡해요?","곡의 마지막 코드 루트가 보통 키예요. 그 음이 집 소리인지 귀로 확인하세요."]]
+};
+const LESSONS=[
+ L('sc1',15,'코드에 맞는 스케일 고르기','코드 → 스케일 표','코드 성질을 보고 어울리는 스케일을 고르기',
+  '신발 고르기와 같아요. 등산(블루스)엔 등산화, 산책(발라드)엔 운동화, 비 오는 날(마이너)엔 장화.',
+  ['코드 이름을 보고 스케일 말해 보기 (표 보며)','반주를 틀고 "보여줄 스케일"을 바꿔 지판에서 점의 위치 보기','같은 곡에서 스케일 두 개를 번갈아 쳐 보며 소리 비교'],
+  ['고르기 어려우면 키 하나로 통일하세요.','표를 프린트해서 연습실 벽에 붙여 두세요.'],
+  studio({progs:PS,grooves:['pop','rock','funk','shuffle'],prog:'maj-1564',lines:['ctpass','run','pentrun','arp'],line:'ctpass',bpm:80,hand:true,scales:SC})),
+ L('sc2',20,'강박은 코드톤, 약박은 스케일','가장 쓸모 있는 규칙','박 위에는 코드톤, 박 사이에는 스케일 음을 두는 즉흥 뼈대 만들기',
+  '울타리(코드톤)에 매달린 빨랫줄 같아요. 울타리 기둥(강박)이 단단해야 줄(스케일 음)이 흔들려도 안 떨어져요.',
+  ['"코드톤+경과음" 라인을 TAB 보며 따라 치기','박 위의 음에 손가락을 짚고 코드톤인지 확인','베이스 소리를 끄고 규칙으로 내가 만든 라인 치기'],
+  ['TAB에서 숫자 아래 점선(박)에 있는 음이 코드톤이에요.','약박 음을 하나 바꿔 보세요. 라인의 얼굴이 달라져요.'],
+  studio({progs:PS,grooves:['pop','rock','funk'],prog:'maj-1564',lines:['ctpass','arp','run'],line:'ctpass',bpm:80,hand:true,builder:true,builderRows:[['6도(약박)',9],['4도(약박)',5],['5도',7],['3도','3'],['2도(약박)',2],['루트',0]],scales:SC})),
+ L('sc3',20,'스케일 런','오르내리기','스케일 음을 올라갔다 내려오는 라인으로 여러 줄을 넘나들기',
+  '계단을 오르내리는 일이에요. 오를 때는 한 칸씩, 내려올 땐 도착 지점을 정확히.',
+  ['스케일 오르내리기 라인을 느린 속도로 따라 치기','"연주 자리"를 바꿔 같은 음을 다른 줄에서도 치기','마지막 음이 코드톤에 도착하는지 확인'],
+  ['세 줄을 넘나들어요. 손은 한 모양으로 움직이고 줄만 바뀌어요.','런의 마지막 음은 다음 마디 루트와 가까운 코드톤에 놓으세요.'],
+  studio({progs:PS,grooves:['pop','rock','funk'],prog:'maj-1564',lines:['run','pentrun','cross'],line:'run',bpm:75,hand:true,scales:SC})),
+ L('sc4',20,'펜타·블루스 적용','안전지대 활용','곡의 키에 맞춰 펜타·블루스 스케일을 선택해서 한 곡을 통과하기',
+  '미끄럼틀 위에 안전망이 깔린 느낌이에요. 미끄러져도 안 다쳐요.',
+  ['마이너 곡에서 마이너 펜타, 메이저 곡에서 메이저 펜타','블루스 12마디에서 블루스 스케일의 b5 활용','키 기준과 코드 기준 두 방법으로 쳐 보기'],
+  ['블루스에서는 b5를 짧게 지나가는 음으로만 쓰세요.','잘 안 들리면 보여줄 스케일을 펜타로 바꿔 보세요.'],
+  studio({progs:['min-1b6b3b7','blues12','maj-1564','min-1b7b6b7'],grooves:['rock','shuffle','pop'],prog:'blues12',key:9,lines:['pentrun','blues','r5o'],line:'pentrun',bpm:85,hand:true,scales:SC})),
+ REST('sc5','쉬는 동안 코드→스케일 표를 보지 않고 말해 보세요.'),
+ L('sc6',20,'모드 적용: 도리안과 믹솔리디안','한 코드 바이브 잼','Am7–D7, Am7 한 코드, G F C G 진행에서 모드의 특징 음을 살려 연주',
+  '한 코드 놀이터에서는 어떤 색깔(모드)로 칠할지가 중요해요.',
+  ['도리안 반주에서 6번 음(특징 음)을 강조해 치기','믹솔리디안 진행에서 b7 강조','마이너/메이저 스케일로 바꿔서 느낌 비교'],
+  ['특징 음은 길게 한 번만 눌러도 색이 나와요.','한 코드가 길면 리듬 변화로 지루함을 풀어 주세요.'],
+  studio({progs:['dor-vamp','dorian2','oyecomova','mix-vamp'],grooves:['funk','rock','ballad','jazz'],prog:'dor-vamp',key:9,lines:['arp','funk','ctpass','run'],line:'ctpass',bpm:90,hand:true,scales:SC})),
+ L('sc7',20,'곡 하나에 스케일 정하기','5단계 순서도','순서도에 따라 곡에 맞는 스케일을 고르고 즉흥으로 한 곡 통과하기',
+  '지도 앱의 길 안내처럼 순서도를 따라가면 길을 잃지 않아요.',
+  ['키·모드 확인 → 코드 성질 확인 → 스케일 고르기 순서로 소리 내어 읽기','반주 하나를 정해 5분간 연주','녹음해서 들어 보기'],
+  ['순서도를 종이에 적어 두고 반주마다 확인하세요.'],
+  studio({progs:ALLP,grooves:ALLG,prog:'canon',key:2,lines:['ctpass','run','pentrun','arp7','guide'],line:'ctpass',bpm:70,hand:true,builder:true,scales:SC})),
+ FINAL('z23',{key:0,prog:'maj-1564',groove:'pop',bpm:80,lines:['ctpass','run'],line:'ctpass',scales:SC,guide:GSTEPS('ctpass','run','코드톤이 박 위, 경과음이 박 사이에 오는 라인을 눈으로 따라가요.','같이 쳐요. 박 위에서 코드톤을 확인하세요.','베이스 소리가 꺼져요. 규칙으로 혼자 쳐요.','스케일 런으로 바꿔 쳐요.')},
+  [{q:'강박(박 위)에 놓는 음은?',o:['코드톤','아무 음','반음 아래'],a:0,why:'강박엔 코드톤.'},{q:'Am7 한 코드 위에서 어울리는 모드는?',o:['도리안','믹솔리디안','로크리안'],a:0,why:'마이너7 → 도리안.'},{q:'뭘 쳐야 할지 모를 때 안전한 스케일은?',o:['펜타토닉','로크리안','블루스만'],a:0,why:'펜타는 거의 어디서나.'},{q:'스케일 런의 도착 음은?',o:['코드톤','2도','아무 음'],a:0,why:'코드톤에 도착해야 안정돼요.'}])
+];
+
+startCourse(LESSONS,'bass-ch23-done');
+</script></body></html>

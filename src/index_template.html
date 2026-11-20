@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>베이스 코스 · 진도 관리</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#eef1f4;--s:#fff;--ink:#1b2330;--m:#5d6878;--l:#d5dbe3;--a:#2563c9;--as:#dce8fb;--g:#1f9d63;--gs:#d8f3e6;--w:#fdf1cf;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#12161c;--s:#1b212a;--ink:#e7ebf1;--m:#9aa5b5;--l:#2e3744;--a:#5b91ec;--as:#1e3357;--g:#3cc285;--gs:#173a2a;--w:#3d3015}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans KR",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px;display:flex;flex-direction:column;gap:14px}
+h1{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:32px;margin:0}h2{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:21px;margin:14px 0 0}
+p{margin:2px 0;color:var(--m)}a{color:var(--a)}
+.card{background:var(--s);border:1px solid var(--l);border-radius:14px;padding:14px 16px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:inherit;font-size:14px;border:1px solid var(--l);background:var(--s);color:var(--ink);border-radius:9px;padding:6px 12px;cursor:pointer}button:hover{border-color:var(--a)}
+button.primary{background:var(--a);border-color:var(--a);color:#fff}
+.bar{height:9px;border-radius:5px;background:var(--l);overflow:hidden;flex:1;min-width:120px}.bar span{display:block;height:100%;background:var(--g);transition:width .3s}
+.pct{font-variant-numeric:tabular-nums;font-weight:600;min-width:64px;text-align:right}
+details.ch{background:var(--s);border:1px solid var(--l);border-radius:12px;padding:8px 14px}
+details.ch.done{border-color:var(--g);background:var(--gs)}
+details.ch summary{cursor:pointer;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+details.ch summary b{min-width:90px}
+.ls{display:flex;gap:8px;align-items:center;padding:3px 0;border-top:1px dashed var(--l)}.ls:first-of-type{margin-top:8px}
+.ls a{flex:1;text-decoration:none;color:var(--ink)}.ls a:hover{text-decoration:underline}.ls .m{color:var(--m);font-size:13px}.ls.rest a{color:var(--m)}
+.ls input{width:18px;height:18px;accent-color:var(--g)}
+.next{background:var(--w);border-radius:12px;padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.pr a.c{display:block;background:var(--gs);border:1px solid var(--l);border-radius:12px;padding:10px 14px;margin:6px 0;text-decoration:none;color:var(--ink)}
+.pr a.c b{color:var(--a)}.pr a.c span{display:block;color:var(--m);font-size:14px}
+textarea{width:100%;min-height:90px;font:12px/1.4 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--l);border-radius:8px;padding:8px}
+@media (pointer:coarse){button{min-height:44px;padding:8px 14px}.ls input{width:24px;height:24px}.ls{padding:7px 0}}
+@media (max-width:640px){.mh{display:block !important;font-size:13px}main{padding:12px 8px 48px}h1{font-size:26px}details.ch summary b{min-width:0}.pct{min-width:auto}select,textarea{font-size:16px}}
+main>*{min-width:0;max-width:100%}body{overflow-x:hidden;-webkit-text-size-adjust:100%;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.warn{background:var(--w);border-radius:10px;padding:8px 12px;font-size:14px;color:var(--ink)}
+</style></head>
+<body><main>
+<h1>베이스 코스 · 진도 관리</h1>
+<p class="mh" style="display:none">📱 아이폰·아이패드: 소리가 안 나면 <b>무음(벨) 스위치</b>를 끄세요. 지판은 좌우로 밀어서 볼 수 있어요.</p>
+<p>강의 옆 체크 표시가 이 브라우저에 저장돼요. 각 강의 페이지에서 체크해도, 여기서 체크해도 똑같이 반영돼요.</p>
+<div id="warn"></div>
+<div class="card"><div class="row"><b>전체 진도</b><div class="bar"><span id="allbar"></span></div><span class="pct" id="allpct"></span></div><p id="alldesc"></p></div>
+<div class="next" id="next"></div>
+<h2>매일 연습 · 실습실</h2>
+<div class="pr card">
+<a class="c" href="Practice/요약노트.html"><b>요약노트 (한 지판으로 보는 전체 강의)</b><span>키·주제 필터로 스케일·코드톤·어프로치·블록을 한 지판에서. 점을 누르면 정체를 알려 줘요</span></a>
+<a class="c" href="Practice/매일연습.html"><b>매일 연습 15분</b> <span id="dailyst"></span><span>음 찾기 3분 · 스케일 5분 · 번호 2분 · 곡 5분 · 오늘의 주법. 매일 하면 좋은 강의 모음 링크 포함</span></a>
+<a class="c" href="Practice/잼스튜디오.html"><b>잼 스튜디오</b><span>키·코드 진행·리듬 선택 → 반주 + 움직이는 TAB + 지판 + 손 애니메이션, 내 mp3 따라 치기</span></a>
+<a class="c" href="Practice/주법연습실.html"><b>주법 연습실</b><span>핑거링·피크·고스트·슬랩·해머온·레게·워킹</span></a>
+</div>
+<div id="parts"></div>
+<h2>기록 관리 (백업·복원)</h2>
+<div class="card"><p>브라우저를 바꾸거나 기록을 지웠을 때 대비해서 백업해 두세요.</p>
+<div class="row" style="margin:8px 0"><button id="exp">백업 만들기</button><button id="imp">복원하기</button><button id="rst">전체 초기화</button></div>
+<textarea id="box" placeholder="백업 만들기를 누르면 여기에 기록 코드가 나와요. 복원하려면 여기에 붙여넣고 복원하기를 누르세요."></textarea></div>
+<p>질문은 <a href="QnA/질의응답_로그.md">QnA</a>, 계획은 <a href="COURSE_PLAN.md">COURSE_PLAN.md</a>.</p>
+</main>
+<script>
+const DATA=/*DATA*/[];
+let mem={};let canStore=true;
+function load(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):{};}catch(e){canStore=false;return mem[k]||{};}}
+function save(k,o){try{localStorage.setItem(k,JSON.stringify(o));}catch(e){canStore=false;mem[k]=o;}}
+function keyOf(c){const m=c.key.match(/^JS:/);return m?'bass-daily-'+new Date().toISOString().slice(0,10):c.key;}
+const chapters=DATA.filter(c=>c.dir!=='Practice'),daily=DATA.find(c=>c.dir==='Practice'&&c.src==='daily');
+const real=c=>c.lessons.filter(l=>!l.rest);
+function chDone(c){const d=load(keyOf(c));return real(c).filter(l=>d[l.id]).length;}
+function el(t,a,h){const e=document.createElement(t);if(a)for(const k in a)e.setAttribute(k,a[k]);if(h!==undefined)e.innerHTML=h;return e;}
+function render(){
+  if(!canStore)document.getElementById('warn').innerHTML='<div class="warn">이 브라우저에서는 저장이 막혀 있어서 체크가 새로고침하면 사라져요. 백업 기능을 쓰거나 일반(비공개 아님) 창에서 열어 주세요.</div>';
+  let tot=0,done=0,nextL=null,nextC=null;
+  const parts={};chapters.forEach(c=>{(parts[c.part]=parts[c.part]||[]).push(c);});
+  const host=document.getElementById('parts');host.innerHTML='';
+  Object.keys(parts).forEach(pt=>{host.append(el('h2',null,pt));
+    parts[pt].forEach(c=>{const d=load(keyOf(c)),rl=real(c),n=rl.filter(l=>d[l.id]).length;tot+=rl.length;done+=n;
+      if(!nextL){const f=rl.find(l=>!d[l.id]);if(f){nextL=f;nextC=c;}}
+      const det=el('details',{class:'ch'+(n===rl.length?' done':'')});if(c._open)det.open=true;
+      det.addEventListener('toggle',()=>{c._open=det.open;});
+      const sm=el('summary',null,'<b>'+(c.title.split('.')[0])+'</b><span style="flex:1;min-width:160px">'+c.title.split('. ').slice(1).join('. ')+'</span><span class="bar" style="max-width:140px"><span style="width:'+(rl.length?n/rl.length*100:0)+'%"></span></span><span class="pct">'+n+' / '+rl.length+'</span>');
+      det.append(sm);
+      c.lessons.forEach((l,i)=>{const row=el('div',{class:'ls'+(l.rest?' rest':'')});
+        const cb=el('input',{type:'checkbox','aria-label':l.t+' 완료'});cb.checked=!!d[l.id];
+        cb.addEventListener('change',()=>{const o=load(keyOf(c));o[l.id]=cb.checked;save(keyOf(c),o);render();});
+        row.append(cb,el('a',{href:c.dir+'/'+c.file+'#'+l.id},(i+1)+'. '+l.t),el('span',{class:'m'},l.min+'분'));det.append(row);});
+      const all=el('div',{class:'row',style:'margin-top:8px'});
+      all.append(btn('이 챕터 모두 체크',()=>{const o={};c.lessons.forEach(l=>o[l.id]=true);save(keyOf(c),o);render();}),btn('모두 해제',()=>{save(keyOf(c),{});render();}),el('a',{href:c.dir+'/'+c.file},'챕터 열기 →'));
+      det.append(all);host.append(det);});});
+  const pct=tot?Math.round(done/tot*100):0;
+  document.getElementById('allbar').style.width=pct+'%';document.getElementById('allpct').textContent=pct+'%';
+  document.getElementById('alldesc').textContent='완료한 강의 '+done+' / '+tot+' (쉬는 시간 제외)';
+  const nx=document.getElementById('next');nx.innerHTML='';
+  if(nextL){nx.append(el('div',null,'<b>다음에 할 강의</b><br>'+nextC.title+' — '+nextL.t),(()=>{const a=el('a',{href:nextC.dir+'/'+nextC.file+'#'+nextL.id},'');a.append(btn('바로 가기 →','', 'primary'));return a;})());}
+  else nx.append(el('div',null,'<b>🎉 모든 강의를 마쳤어요!</b> 이제 매일 연습과 잼 스튜디오로 계속 즐겨요.'));
+  // 매일 연습
+  if(daily){const d=load(keyOf(daily)),rl=real(daily),n=rl.filter(l=>d[l.id]).length;let streak=0;const days=[];
+    try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^bass-daily-\d{4}-\d{2}-\d{2}$/.test(k)){const o=JSON.parse(localStorage.getItem(k)||'{}');if(rl.every(l=>o[l.id]))days.push(k.slice(11));}}}catch(e){}
+    days.sort();const set=new Set(days);let dt=new Date();if(!set.has(dt.toISOString().slice(0,10)))dt.setDate(dt.getDate()-1);
+    while(set.has(dt.toISOString().slice(0,10))){streak++;dt.setDate(dt.getDate()-1);}
+    document.getElementById('dailyst').textContent='· 오늘 '+n+' / '+rl.length+' 완료 · 연속 '+streak+'일 · 누적 '+days.length+'일';}
+}
+function btn(t,fn,cls){const b=el('button',{type:'button',class:cls||''},t);if(fn)b.addEventListener('click',fn);return b;}
+document.getElementById('exp').onclick=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^bass/.test(k))o[k]=localStorage.getItem(k);}}catch(e){}document.getElementById('box').value=JSON.stringify(o);};
+document.getElementById('imp').onclick=()=>{try{const o=JSON.parse(document.getElementById('box').value);Object.keys(o).forEach(k=>{if(/^bass/.test(k))localStorage.setItem(k,o[k]);});render();alert('복원했어요.');}catch(e){alert('기록 코드를 확인해 주세요.');}};
+document.getElementById('rst').onclick=()=>{if(!confirm('모든 체크 기록을 지울까요? 되돌릴 수 없어요.'))return;try{Object.keys(localStorage).filter(k=>/^bass/.test(k)).forEach(k=>localStorage.removeItem(k));}catch(e){}render();};
+render();
+</script></body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="베이스 코스">
+<meta name="theme-color" content="#2563c9">
+<title>Chapter 28. 톤과 장비</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../shared/bass-style.css">
+<link rel="stylesheet" href="../shared/practice.css">
+</head><body><main>
+<header class="card">
+  <div class="head"><h1>Chapter 28. 톤과 장비</h1><span class="pill">Part 7 · 프로 베이시스트</span></div>
+  <p class="muted">셋업, 앰프·EQ, 주법별 톤 레시피, 믹스 속 베이스 자리, 줄·튜닝 관리, 몸 관리.</p>
+  <p class="mobilehint muted">📱 지판·TAB은 <b>좌우로 밀어서</b> 볼 수 있어요. 소리가 안 나면 아이폰의 <b>무음(벨) 스위치</b>를 끄고 재생 버튼을 한 번 눌러 주세요.</p>
+  <nav class="tl" id="tl" aria-label="강의 순서"></nav>
+  <div class="row"><div class="bar" style="flex:1"><span id="prog"></span></div><span class="score muted" id="progt">0 / 0</span></div>
+  <p class="lessonlink muted"><a href="../index.html">← 전체 목차·진도 관리</a> · <a href="../Practice/요약노트.html">요약노트</a> · <a href="../Practice/매일연습.html">매일 연습</a> · <a href="../Practice/잼스튜디오.html">잼 스튜디오</a> · <a href="../Practice/주법연습실.html">주법 연습실</a> · <a href="../QnA/README.md">질의응답</a></p>
+</header>
+<div id="lessons"></div>
+</main>
+<script src="../shared/bass-lib.js"></script>
+<script src="../shared/practice-lib.js"></script>
+<script>
+const THEORY={
+tn1:`<p><b>기본 셋업</b>은 소리와 몸의 건강을 좌우해요. 체크 포인트:</p>
+<ul><li><b>스트랩 높이</b>: 서서 칠 때와 앉아서 칠 때 오른손·왼손 위치가 같도록. 너무 낮으면 손목이 꺾여요.</li><li><b>줄 높이(액션)</b>: 낮으면 쉽지만 줄이 프렛에 닿아 잡음, 높으면 선명하지만 힘이 들어요.</li><li><b>넥 상태</b>: 계절에 따라 휘어짐이 변하니 이상하면 샵에서 조정.</li><li><b>튜닝</b>: 연습 시작 전 항상 튜너로.</li></ul>
+<p>손이 아프거나 소리가 이상하면 연주 습관이 아니라 셋업 문제일 수 있어요. 한 번 전문가에게 점검받는 것이 좋아요.</p>`,
+tn2:`<p><b>앰프와 EQ</b> 기본: EQ는 소리를 저음(Low)·중저음·중음·고음(High)으로 나눠 키우거나 줄여요. 베이스는 <b>저음(40~250Hz)</b>이 몸통이고, <b>중음(500Hz~2kHz)</b>이 "소리의 윤곽(어택, 존재감)"이에요. 저음만 키우면 밴드 속에서 뭉개져 안 들리고, 중음이 없으면 소리가 묻혀요.</p>
+<p>톤을 만들 때 원칙: <b>① 평평하게 시작 ② 한 번에 하나만 조절 ③ 밴드와 같이 칠 때 최종 조정 ④ 키우기보다 줄이기 먼저</b>. 아래 EQ 랩에서 슬라이더를 움직여 소리 변화를 들어 보세요.</p>`,
+tn3:`<p>주법마다 어울리는 톤이 달라요.</p>
+<table><tr><th>주법</th><th>EQ 경향</th><th>이유</th></tr><tr><td>핑거(따뜻)</td><td>저음·중저음 ↑, 고음 ↓</td><td>둥글고 굵은 소리</td></tr><tr><td>피크(록)</td><td>중음·고음 ↑</td><td>어택이 또렷</td></tr><tr><td>슬랩</td><td>저음·고음 ↑, 중음 ↓(스쿱)</td><td>탁!과 팝!이 살아남</td></tr><tr><td>레게</td><td>저음 ↑↑, 고음 ↓↓</td><td>묵직하고 둥글게</td></tr></table>
+<p>프리셋을 눌러 비교하고, 같은 라인을 쳐 보며 귀로 확인하세요.</p>`,
+tn4:`<p><b>밴드 믹스에서 베이스의 자리</b>: 킥 드럼도 저음이라서 베이스와 겹치기 쉬워요. 소리가 안 보이면 <b>저음을 키우기보다 중음(어택)을 살려서</b> 윤곽을 만들어요. 겹침을 피하는 팁: 킥과 베이스의 중심 주파수를 살짝 다르게(킥 60Hz, 베이스 100Hz) 하거나 락인으로 같은 순간에 치기.</p>
+<p>악기별 대략의 주파수 대역: 킥 40~100Hz, 베이스 40~250Hz(배음은 800Hz+), 기타 80Hz~5kHz, 보컬 150Hz~4kHz, 하이햇 5kHz 이상. 겹치는 곳에서 서로 양보해요.</p>`,
+tn6:`<p><b>줄과 유지관리</b>: 줄은 시간이 지나면 소리가 죽어요(녹, 먼지). 수명은 사용에 따라 몇 달~1년. <b>줄 교체 신호</b>: 튜닝이 안 맞음, 소리가 둔함, 손에 거칠게 느껴짐. 연주 후엔 줄을 마른 천으로 닦으면 오래가요. 튜닝은 <b>매번 연주 전, 합주 중에도 확인</b>. 케이블 접촉 불량은 잡음의 흔한 원인이니 연결 부위를 확인하세요.</p>`,
+tn7:`<p><b>몸 관리</b>는 오래 연주하기의 핵심이에요. ① 연습 전 손목·손가락 스트레칭 ② 30분 연주 후 5분 휴식 ③ 어깨·목에 힘 빼기 ④ 아프면 즉시 중단 ⑤ 같은 동작만 길게 하지 않기. <b>하루 15분씩 매일</b>이 한 번에 3시간보다 안전하고 효과적이에요.</p>`
+};
+const FAQ={
+tn1:[["스트랩은 어느 높이가 맞나요?","앉아서 연주할 때의 위치와 비슷하게 맞추세요. 오른손과 왼손이 편하게 닿는 높이예요."]],
+tn2:[["EQ를 어떻게 시작하죠?","모두 0(평평)에서 시작해 한 번에 하나만 움직이세요. 키우기보다 줄이는 쪽이 안전해요."]],
+tn3:[["프리셋을 그냥 써도 되나요?","시작점으로 좋아요. 내 베이스·앰프·방에 따라 약간 조정하세요."]],
+tn4:[["밴드에서 내 소리가 안 들려요.","저음을 키우지 말고 중음(500Hz~1kHz)을 살짝 올려 보세요. 어택이 살아나요."]],
+tn6:[["줄은 얼마나 자주 갈아요?","소리가 둔해지고 튜닝이 불안하면 갈 때예요. 보통 몇 달~1년이에요."]],
+tn7:[["손목이 아파요.","즉시 쉬고 자세·셋업을 점검하세요. 계속하면 부상이 돼요."]]
+};
+const LESSONS=[
+ L('tn1',15,'기본 셋업','자세와 높이','스트랩 높이, 줄 높이, 넥 상태, 튜닝을 점검하기',
+  '운동화 끈을 먼저 묶고 뛰는 것처럼 연주 전에 셋업부터 점검해요.',
+  ['스트랩 높이 조정하고 앉아서/서서 비교','튜너로 4줄 튜닝','손이 아프지 않은 위치 찾기'],
+  ['아프면 연습 방법이 아니라 셋업 문제일 수 있어요.','한 번은 악기점에서 셋업 점검을 받아 보세요.'],
+  studio({progs:['maj-1564'],grooves:['ballad'],prog:'maj-1564',lines:['root4','r5'],line:'root4',bpm:60,hand:true})),
+ L('tn2',20,'앰프와 EQ 기본','소리 만지기','저음·중저음·중음·고음 EQ를 움직여 소리 변화를 직접 듣기',
+  '라디오 톤 조절 버튼을 돌려 소리 색깔을 바꾸는 시간이에요.',
+  ['평평(0)에서 시작','슬라이더를 하나씩 움직여 변화 듣기','"밴드에서 또렷하게" 프리셋 비교'],
+  ['0에서 시작해 한 번에 하나만 움직이세요.','소리가 뭉개지면 저음을 줄이고 중음을 살짝 올리세요.'],
+  t=>EqLab(t)),
+ L('tn3',20,'주법별 톤 레시피','핑거·피크·슬랩·레게','주법과 곡에 맞는 톤을 EQ 프리셋으로 찾고 비교하기',
+  '옷을 갈아입듯 톤도 상황에 맞게 바꿔요.',
+  ['프리셋을 눌러 소리 비교','내가 좋아하는 곡의 톤 설명해 보기','반주와 함께 주법별 연습'],
+  ['프리셋은 시작점이에요. 내 베이스에 맞게 조금씩 조정하세요.'],
+  both(t=>EqLab(t),studio({progs:['maj-1564','min-1b7b6b7'],grooves:['rock','funk','reggae','ballad'],prog:'min-1b7b6b7',key:9,lines:['root8','slap','funk','reggae','r5'],line:'root8',bpm:80,hand:true}))),
+ L('tn4',20,'믹스 속 베이스의 자리','주파수 지도','악기별 주파수 대역과 베이스·킥이 겹치지 않게 하는 방법 이해',
+  '주방에 요리사가 너무 많으면 서로 부딪히죠? 소리도 영역을 나눠 써요.',
+  ['아래 주파수 지도에서 악기별 대역 보기','킥과 베이스가 겹치는 구간 찾기','드럼 반주를 켜고 락인 연습'],
+  ['소리가 안 들리면 키우기 전에 다른 악기와 영역이 겹치는지 먼저 생각하세요.'],
+  t=>{const svg=mk('svg',{viewBox:'0 0 600 210',role:'img','aria-label':'악기별 주파수 대역'});const F=f=>40+Math.log10(f/30)/Math.log10(18000/30)*540;
+   [['킥',40,100,'var(--bad)'],['베이스(기본음)',40,250,'var(--accent)'],['베이스(배음·어택)',500,2500,'var(--accent)'],['스네어',150,5000,'var(--warn)'],['기타',80,5000,'var(--good)'],['보컬',150,4000,'var(--muted)'],['하이햇',5000,16000,'var(--board-line)']].forEach(([n,a,b,c],i)=>{mk('rect',{x:F(a),y:12+i*26,width:F(b)-F(a),height:18,rx:4,fill:c,opacity:.85},svg);const tx=mk('text',{x:F(a)+4,y:25+i*26,class:'lab',style:'fill:var(--ink)'},svg);tx.textContent=n;});
+   [50,100,500,1000,5000,10000].forEach(f=>{mk('line',{x1:F(f),y1:0,x2:F(f),y2:195,stroke:'var(--line)'},svg);const tx=mk('text',{x:F(f),y:208,class:'lab','text-anchor':'middle'},svg);tx.textContent=f>=1000?(f/1000)+'k':f;});
+   const w=el('div',{class:'boardwrap'});w.append(svg);t.append(w,el('p',{class:'muted'},'가로축은 주파수(Hz), 막대의 길이는 악기가 주로 소리 내는 영역이에요. 킥과 베이스의 기본음이 겹치는 곳(40~100Hz)에서는 서로 양보하거나 락인으로 같은 순간에 쳐요.'));
+   const d=el('div',{class:'tool'});t.append(d);studio({progs:['maj-1564','min-1b7b6b7'],grooves:['rock','funk'],prog:'maj-1564',lines:['root8','funk','r5o'],line:'root8',bpm:90,hand:true})(d);}),
+ REST('tn5','쉬는 동안 손목·손가락 스트레칭을 10초씩 해 보세요.'),
+ L('tn6',15,'줄과 유지관리','튜닝·교체·청소','줄 교체 시기, 닦는 법, 튜닝 습관을 익히기',
+  '자동차 정기 점검과 같아요. 작은 관리가 큰 고장을 막아요.',
+  ['연주 전 튜닝하는 습관 만들기','줄 닦는 법 익히기','줄 교체 신호 5가지 외우기'],
+  ['튜닝은 합주 중에도 확인하세요. 한 곡마다 눈으로 확인하는 습관을 들이세요.'],
+  quiz([{q:'줄 교체 신호가 아닌 것은?',o:['소리가 맑아짐','튜닝이 자주 틀어짐','소리가 둔해짐'],a:0,why:'소리가 둔해질 때가 교체 신호예요.'},{q:'튜닝은 언제?',o:['연주 전과 합주 중','한 달에 한 번','안 해도 됨'],a:0,why:'자주 확인해요.'},{q:'연주 후 줄은?',o:['마른 천으로 닦기','물로 씻기','그냥 두기'],a:0,why:'녹과 먼지를 막아요.'}])),
+ L('tn7',20,'몸 관리와 연습 습관','오래 즐기기','스트레칭, 휴식, 자세 점검으로 부상 없이 오래 연주하기',
+  '운동선수가 몸을 관리하듯 연주자도 손목과 어깨를 관리해요.',
+  ['스트레칭 순서 외우기','30분 연주 → 5분 휴식 규칙 정하기','아프면 중단하는 기준 정하기'],
+  ['하루 15분 매일이 3시간 몰아서보다 안전해요.','아픈 느낌은 연습이 아니라 경고예요.'],
+  studio({progs:['maj-1451'],grooves:['ballad'],prog:'maj-1451',lines:['root4','r5'],line:'root4',bpm:60,hand:true})),
+ FINAL('z28',{key:9,prog:'min-1b7b6b7',groove:'rock',bpm:85,progs:['min-1b7b6b7','maj-1564'],lines:['root8','slap'],line:'root8',guide:GSTEPS('root8','slap','핑거 톤으로 8분음표 루트를 소리 내며 EQ를 떠올려 보세요.','같이 쳐요. 소리의 굵기와 또렷함을 귀로 확인해요.','베이스 소리가 꺼져요. 내 톤으로 혼자 쳐요.','슬랩 라인으로 바꿔 톤의 변화를 느껴요.')},
+  [{q:'EQ를 시작할 때 처음 값은?',o:['평평(0)','모두 최대','모두 최소'],a:0,why:'0에서 시작해요.'},{q:'슬랩 톤의 EQ는?',o:['저음·고음 ↑, 중음 ↓','모두 ↑','저음 ↓'],a:0,why:'스쿱 모양이에요.'},{q:'밴드에서 소리가 안 들릴 때 먼저?',o:['중음(어택) 살리기','저음 최대로','음량 최대로'],a:0,why:'윤곽을 살려요.'},{q:'아프면?',o:['즉시 쉰다','참고 계속','더 세게'],a:0,why:'부상 예방.'}])
+];
+
+startCourse(LESSONS,'bass-ch28-done');
+</script></body></html>
